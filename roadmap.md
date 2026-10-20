@@ -1,9 +1,13 @@
 # Roadmap — Dashboard layout rearrangement
 
-- [ ] Inventory existing modules, controls and baseline behavior.
-- [ ] Rearrange hero, command bar, statistics and module columns without redesigning.
-- [ ] Verify preservation, interactions, desktop/tablet/mobile overflow and available tests.
-- [ ] Check automatic production-build results and report verification limitations.
+- [x] Inventory existing modules, controls and baseline behavior.
+- [x] Rearrange hero, command bar, statistics and module columns without redesigning.
+- [x] Verify preservation, interactions, desktop/tablet/mobile overflow and available tests.
+- [x] Check automatic production-build results and report verification limitations.
+
+Verification: retained 32 original buttons, 2 inputs, 15 images, all 10 data collections and unchanged command/module handlers. All 15 navigation dialogs, four command shortcuts, lookbook selection/Auto, six agent selections/reset, mic state toggle and keyboard controls passed. Real AYRA command streamed successfully. No page errors or horizontal overflow at 320, 390, 768, 1026, 1280 and 1536px. Existing routing test passed (1/1); automatic production build reports build OK.
+
+Limitations: original header Global/theme/notification/profile controls and search have no associated functionality; existing module dialogs and View All labels remain unchanged. No authentication or permission behavior was available to exercise; no server, route, integration or permission files were modified.
 
 ## Previous completed work — AYRA avatar upgrade
 
