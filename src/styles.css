@@ -474,9 +474,6 @@ html { transition: color .7s; }
  .workspace-request-path { gap: 6px; flex-wrap: wrap; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ayra-banner-video { display: none; }
-}
 
 /* AYRA owns the full banner; a real running task splits it in half */
 .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { grid-template-columns: minmax(0, 1fr); }
