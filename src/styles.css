@@ -529,3 +529,17 @@ html { transition: color .7s; }
 .immersive-dashboard .office-streams > div > div:first-child { flex-basis: 100%; }
 .immersive-dashboard .dashboard-hero { grid-template-rows: minmax(0, 1fr); }
 @media (max-width: 767px) { .immersive-dashboard .office-streams { gap: 12px; padding: 12px; } }
+
+/* Full-screen office: header hidden on this view (menu button stays as a floating control for navigation) */
+.immersive-dashboard .dashboard-header { position: absolute; inset: 0 auto auto 0; z-index: 20; padding: 12px; border: 0; background: none; display: block; height: 0; }
+.immersive-dashboard .dashboard-header > :not(:first-child) { display: none !important; }
+.immersive-dashboard .dashboard-header > :first-child { background: var(--command-glass); backdrop-filter: blur(12px); }
+html, body { overflow-x: hidden; }
+.immersive-dashboard .dashboard-shell, .immersive-dashboard .dashboard-main { padding: 0; margin: 0; }
+.immersive-dashboard .dashboard-hero,
+.immersive-dashboard .dashboard-hero[data-task-running="true"],
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { width: 100vw; max-width: 100%; height: 100svh; margin: 0; border-radius: 0; }
+@media (max-width: 767px) {
+  .immersive-dashboard .dashboard-hero, .immersive-dashboard .dashboard-hero[data-task-running="true"], .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { height: 100svh; }
+}
+.immersive-dashboard .office-streams { margin-top: 0; }
