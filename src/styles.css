@@ -381,3 +381,33 @@ html { transition: color .7s; }
   .dashboard-hero .hero-identity { padding: 12px; }
   .dashboard-hero .hero-streams { padding: 12px; gap: 8px; }
 }
+
+/* Split mission workspace; all telemetry is event-fed, not timer-generated. */
+.dashboard-hero { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+.dashboard-hero .hero-identity { grid-column: 2; grid-row: 1; width: 100%; align-self: end; min-height: 540px; justify-content: flex-end; padding: 24px; pointer-events: none; }
+.dashboard-hero .hero-identity > * { pointer-events: auto; }
+.dashboard-hero .hero-identity > .panel { max-height: 150px; }
+.dashboard-hero .hero-streams { grid-column: 1 / -1; }
+.ayra-cinematic-scene { object-position: right top; }
+.action-workspace { grid-column: 1; grid-row: 1; min-width: 0; position: relative; padding: 24px; background: var(--ayra-scene-panel); border-right: 1px solid var(--border); box-shadow: inset 0 0 32px color-mix(in oklab, var(--primary) 12%, transparent); }
+.workspace-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.workspace-modes { display: flex; flex-wrap: wrap; gap: 3px; margin: 18px 0; border-block: 1px solid var(--border); padding-block: 8px; }
+.workspace-title { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 12px; }
+.workspace-request { padding-block: 8px; border-bottom: 1px solid var(--border); }
+.workspace-request p { margin-top: 4px; overflow-wrap: anywhere; font-size: 14px; }
+.workspace-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; padding-block: 12px; }
+.workspace-metrics dt { font-size: 11px; color: var(--muted-foreground); }
+.workspace-metrics dd { font-size: 15px; color: var(--accent); overflow-wrap: anywhere; }
+.workspace-output { border-block: 1px solid var(--border); padding: 12px 0; }
+.workspace-output pre { min-height: 110px; max-height: 220px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.6 var(--font-sans); }
+.workspace-events { margin-top: 12px; font-size: 11px; color: var(--muted-foreground); max-height: 90px; overflow: auto; }
+.workspace-events li { border-left: 1px solid var(--border); padding: 3px 10px; }
+.workspace-idle { min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; }
+.workspace-reticle { padding: 24px; border: 1px solid var(--border); border-radius: 6px; transform: perspective(600px) rotateX(12deg); box-shadow: 0 12px 24px color-mix(in oklab, var(--primary) 12%, transparent); }
+.workspace-idle-line { width: 80%; height: 1px; background: var(--border); margin-top: 16px; }
+@media (max-width: 767px) {
+ .dashboard-hero { grid-template-columns: minmax(0,1fr); }
+ .dashboard-hero .hero-identity { grid-column: 1; grid-row: 1; min-height: 360px; width: 100%; padding: 16px; }
+ .action-workspace { grid-column: 1; grid-row: 2; padding: 16px; border-right: 0; border-block: 1px solid var(--border); }
+ .dashboard-hero .hero-streams { grid-row: 3; }
+}
