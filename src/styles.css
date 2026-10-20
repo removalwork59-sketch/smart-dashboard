@@ -543,3 +543,6 @@ html, body { overflow-x: hidden; }
   .immersive-dashboard .dashboard-hero, .immersive-dashboard .dashboard-hero[data-task-running="true"], .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { height: 100svh; }
 }
 .immersive-dashboard .office-streams { margin-top: 0; }
+/* AYRA's office wall with the single Software Vala logo in the centre */
+.ayra-office-wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.immersive-dashboard .ayra-office-backdrop { display: none; }
