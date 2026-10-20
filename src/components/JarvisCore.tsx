@@ -15,9 +15,24 @@ import ayraCrystal from "@/assets/ayra-crystal.jpg";
 import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 
-export type CoreState = "idle" | "listening" | "thinking" | "executing" | "verifying" | "speaking" | "completed" | "error";
+export type CoreState =
+  | "idle"
+  | "listening"
+  | "thinking"
+  | "executing"
+  | "verifying"
+  | "speaking"
+  | "completed"
+  | "error";
 export const stateLabel: Record<CoreState, string> = {
-  idle: "Standing by", listening: "Listening…", thinking: "Thinking…", executing: "Executing…", verifying: "Verifying…", speaking: "AYRA is responding…", completed: "Task completed", error: "Command not recognised",
+  idle: "Standing by",
+  listening: "Listening…",
+  thinking: "Thinking…",
+  executing: "Executing…",
+  verifying: "Verifying…",
+  speaking: "AYRA is responding…",
+  completed: "Task completed",
+  error: "Command not recognised",
 };
 
 /** AYRA's looks — the same avatar photographed from different angles and outfits. */
@@ -107,15 +122,27 @@ export const LOOK_NAMES: Record<AyraLook, string> = {
 
 /** Background colour measured from the edges of each AYRA photo. */
 export const LOOK_BG: Record<AyraLook, string> = {
-  default: "#e4e5e9", cyanSide: "#c5c2c4", cyanJacket: "#d8d8e0", braids: "#59819b",
-  amberSide: "#e4e4e9", amberFront: "#dedfe3", amberProfile: "#aaabad", violet: "#e4e8f0",
-  headset: "#b2b4be", gold: "#cec8c1", bob: "#bbd3e8", crystal: "#644f8e", veil: "#565c67",
+  default: "#e4e5e9",
+  cyanSide: "#c5c2c4",
+  cyanJacket: "#d8d8e0",
+  braids: "#59819b",
+  amberSide: "#e4e4e9",
+  amberFront: "#dedfe3",
+  amberProfile: "#aaabad",
+  violet: "#e4e8f0",
+  headset: "#b2b4be",
+  gold: "#cec8c1",
+  bob: "#bbd3e8",
+  crystal: "#644f8e",
+  veil: "#565c67",
 };
 
 /** Paint the whole dashboard background with the photo's background; flip text for contrast. */
 function applyBackground(hex: string) {
   const ch = (i: number) => parseInt(hex.slice(i, i + 2), 16) / 255;
-  const r = ch(1), g = ch(3), b = ch(5);
+  const r = ch(1),
+    g = ch(3),
+    b = ch(5);
   const light = 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.55;
   const s = document.documentElement.style;
   s.setProperty("--background", hex);
@@ -128,31 +155,70 @@ function applyBackground(hex: string) {
 
 /** Animated AI core: AYRA avatar, rings, aura and neural streams react to `state`.
  *  `theme` (agent dress code) wins over AYRA's outfit colour when set. */
-export function JarvisCore({ state, tilt = [0, 0], override = null, theme = null }: { state: CoreState; tilt?: [number, number]; override?: AyraLook | null; theme?: DressCode | null }) {
+export function JarvisCore({
+  state,
+  tilt = [0, 0],
+  override = null,
+  theme = null,
+}: {
+  state: CoreState;
+  tilt?: [number, number];
+  override?: AyraLook | null;
+  theme?: DressCode | null;
+}) {
   const occasion = activeOccasion();
   const look = override ?? (occasion ? occasion.look : stateLook[state]);
-  useEffect(() => { applyTheme(theme ?? LOOK_THEME[look]); applyBackground(LOOK_BG[look]); }, [look, theme]);
+  useEffect(() => {
+    applyTheme(theme ?? LOOK_THEME[look]);
+    applyBackground(LOOK_BG[look]);
+  }, [look, theme]);
   return (
-    <div className="core pointer-events-none absolute inset-0 grid place-items-center" data-state={state} data-look={look}>
+    <div
+      className="core pointer-events-none absolute inset-0 grid place-items-center"
+      data-state={state}
+      data-look={look}
+    >
       <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
       <div className="ayra-banner-shade" />
-      <div className="ayra-banner-portrait parallax" style={{ transform: `perspective(900px) rotateY(${tilt[0] * 2}deg) rotateX(${-tilt[1] * 2}deg)` }}>
+      <div
+        className="ayra-banner-portrait parallax"
+        style={{
+          transform: `perspective(900px) rotateY(${tilt[0] * 2}deg) rotateX(${-tilt[1] * 2}deg)`,
+        }}
+      >
         {state === "verifying" && <div className="scan-line" />}
-        {state === "completed" && <div className="anim-pop absolute inset-[30%] rounded-full border-2 border-success" />}
-        {state === "error" && <div className="anim-shake absolute inset-[30%] rounded-full border-2 border-danger" />}
+        {state === "completed" && (
+          <div className="anim-pop absolute inset-[30%] rounded-full border-2 border-success" />
+        )}
+        {state === "error" && (
+          <div className="anim-shake absolute inset-[30%] rounded-full border-2 border-danger" />
+        )}
         {state === "listening" && (
           <div className="absolute bottom-[8%] left-1/2 flex h-8 -translate-x-1/2 items-center gap-1">
-            {Array.from({ length: 9 }, (_, i) => <span key={i} className="wave-bar h-full w-1 rounded bg-success" style={{ animationDelay: `${i * 0.08}s` }} />)}
+            {Array.from({ length: 9 }, (_, i) => (
+              <span
+                key={i}
+                className="wave-bar h-full w-1 rounded bg-success"
+                style={{ animationDelay: `${i * 0.08}s` }}
+              />
+            ))}
           </div>
         )}
         {/* AYRA bust: full face, head, neck and shoulders — portrait frame, no circular crop */}
         <div className="ayra-sway absolute inset-0">
           <div className="ayra-breathe absolute inset-0">
             {(Object.keys(AYRA_LOOKS) as AyraLook[]).map((k) => (
-              <img key={k} src={AYRA_LOOKS[k]} alt={k === look ? "AYRA holographic AI avatar" : ""} aria-hidden={k !== look}
-                width={768} height={1024} loading={k === "default" ? "eager" : "lazy"}
+              <img
+                key={k}
+                src={AYRA_LOOKS[k]}
+                alt={k === look ? "AYRA holographic AI avatar" : ""}
+                aria-hidden={k !== look}
+                width={768}
+                height={1024}
+                loading={k === "default" ? "eager" : "lazy"}
                 className="ayra-banner-look absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700"
-                style={{ opacity: k === look && look !== "default" ? 1 : 0 }} />
+                style={{ opacity: k === look && look !== "default" ? 1 : 0 }}
+              />
             ))}
             {/* holographic sheen matched to dashboard palette */}
           </div>

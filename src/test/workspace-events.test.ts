@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { applyTaskEvent, type WorkspaceTask } from "@/lib/workspace-events";
-const initial: WorkspaceTask = { id: 1, kind: "response", title: "Actual request", status: "running", output: "", bytes: 0, events: [] };
+const initial: WorkspaceTask = {
+  id: 1,
+  kind: "response",
+  title: "Actual request",
+  status: "running",
+  output: "",
+  bytes: 0,
+  events: [],
+};
 describe("Truthful workspace events", () => {
   it("does not manufacture progress before a real chunk", () => {
     const task = applyTaskEvent(initial, { type: "headers", status: 200, latencyMs: 123 });
