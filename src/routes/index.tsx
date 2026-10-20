@@ -334,20 +334,21 @@ function Dashboard() {
         <div className="header-search panel flex min-w-0 items-center gap-3 px-4 py-2">
           <Search className="h-4 w-4 text-primary" />
           <input
+            aria-label="Search"
             className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             placeholder="Search anything... (Software, Project, Customer, Code, Server)"
           />
         </div>
         <div className="header-actions flex min-w-0 items-center gap-3">
-          <button className="panel flex items-center gap-2 px-3 py-2 text-sm">
+          <button aria-label="Global region" className="panel flex items-center gap-2 px-3 py-2 text-sm">
             <Globe className="h-4 w-4 text-primary" />
             Global
             <ChevronDown className="h-4 w-4" />
           </button>
-          <button className="panel p-2">
+          <button aria-label="Theme" className="panel p-2">
             <Sun className="h-5 w-5 text-warn" />
           </button>
-          <button className="panel relative p-2">
+          <button aria-label="Notifications, 3 unread" className="panel relative p-2">
             <Bell className="h-5 w-5 text-primary" />
             <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-danger text-[10px]">
               3
