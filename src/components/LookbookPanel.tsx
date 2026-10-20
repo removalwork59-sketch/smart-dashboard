@@ -19,11 +19,11 @@ export function LookbookPanel({ current, onSelect, onClose }: { current: AyraLoo
   const looks = Object.keys(AYRA_LOOKS) as AyraLook[];
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-background/70 p-4 backdrop-blur-sm anim-fade-up" onClick={onClose} role="dialog" aria-modal="true" aria-label="AYRA lookbook">
-      <div className="panel holo-scan anim-holo w-full max-w-3xl p-6" onClick={(e) => e.stopPropagation()}>
-        <div className="mb-4 flex items-center gap-3">
-          <Sparkles className="h-7 w-7 text-primary glow-icon" />
-          <h2 className="font-display text-xl tracking-widest text-primary glow-text">AYRA LOOKBOOK</h2>
-          <button onClick={onClose} aria-label="Close" className="ml-auto rounded-full border border-border p-2 hover:bg-muted"><X className="h-4 w-4" /></button>
+      <div className="panel holo-scan anim-holo max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+          <Sparkles className="h-7 w-7 shrink-0 text-primary glow-icon" />
+          <h2 className="min-w-0 break-words font-display text-xl tracking-widest text-primary glow-text">AYRA LOOKBOOK</h2>
+          <button onClick={onClose} aria-label="Close" className="ml-auto shrink-0 rounded-full border border-border p-2 hover:bg-muted"><X className="h-4 w-4" /></button>
         </div>
         <p className="text-xs text-muted-foreground">Pick an outfit — the whole dashboard recolours to match her dress. Choose Auto to follow her state again.</p>
         <div className="mt-4 grid max-h-[62vh] grid-cols-3 gap-3 overflow-y-auto pr-1 sm:grid-cols-4 md:grid-cols-5">
