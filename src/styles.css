@@ -383,6 +383,7 @@ html { transition: color .7s; }
 }
 
 /* Split mission workspace; all telemetry is event-fed, not timer-generated. */
+.core:not([data-look="default"]) > .ayra-cinematic-scene { visibility: hidden; }
 .dashboard-hero { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
 .dashboard-hero .hero-identity { grid-column: 2; grid-row: 1; width: 100%; align-self: end; min-height: 540px; justify-content: flex-end; padding: 24px; pointer-events: none; }
 .dashboard-hero .hero-identity > * { pointer-events: auto; }
