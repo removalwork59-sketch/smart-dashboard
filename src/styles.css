@@ -202,8 +202,6 @@ body {
 html { transition: color .7s; }
 
 /* ===== 7D sci-fi layer ===== */
-@keyframes spin-slow { to { transform: rotate(360deg); } }
-@keyframes spin-rev { to { transform: rotate(-360deg); } }
 @keyframes pulse-core { 0%,100% { transform: scale(1); opacity: .9 } 50% { transform: scale(1.04); opacity: 1 } }
 @keyframes stream { from { stroke-dashoffset: 40 } to { stroke-dashoffset: 0 } }
 @keyframes scan { from { transform: translateY(-100%) } to { transform: translateY(100%) } }
@@ -218,8 +216,6 @@ html { transition: color .7s; }
 @utility anim-slide { animation: slide-in .55s cubic-bezier(.2,.8,.2,1) both; }
 @utility anim-iris { animation: iris-in .6s cubic-bezier(.2,.8,.2,1) both; }
 @utility anim-fade-up { animation: fade-up .4s ease both; }
-@utility ring-spin { animation: spin-slow 24s linear infinite; }
-@utility ring-spin-rev { animation: spin-rev 16s linear infinite; }
 @utility core-pulse { animation: pulse-core 3s ease-in-out infinite; }
 @utility data-stream { stroke-dasharray: 4 6; animation: stream 1.2s linear infinite; }
 @utility depth-card {
@@ -240,8 +236,6 @@ html { transition: color .7s; }
 .core[data-state="verifying"] { --core-glow: var(--primary); }
 .core { --core-glow: var(--primary); }
 .core-aura { box-shadow: 0 0 80px 10px color-mix(in oklab, var(--core-glow) 45%, transparent); transition: box-shadow .5s; }
-.core[data-state="thinking"] .ring-spin { animation-duration: 4s; }
-.core[data-state="executing"] .ring-spin-rev { animation-duration: 3s; }
 .core[data-state="idle"] .data-stream { animation-duration: 3s; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -271,18 +265,15 @@ html { transition: color .7s; }
 @keyframes eye-glow { 0%,100% { opacity: .55 } 50% { opacity: 1 } }
 @keyframes speak { 0%,100% { transform: scaleX(.6) scaleY(.4); opacity: .4 } 50% { transform: scaleX(1) scaleY(1); opacity: .9 } }
 @keyframes ripple { from { transform: scale(.6); opacity: .8 } to { transform: scale(1.5); opacity: 0 } }
-@keyframes orbit { to { transform: rotate(360deg) } }
 @keyframes sway { 0%,100% { transform: rotate(-.6deg) translateX(-.4%) } 50% { transform: rotate(.6deg) translateX(.4%) } }
 @utility ayra-breathe { animation: breathe 6s ease-in-out infinite; }
 @utility ayra-sway { animation: sway 9s ease-in-out infinite; transform-origin: 50% 90%; }
 @utility ayra-eye { animation: blink 5s ease-in-out infinite, eye-glow 2.4s ease-in-out infinite; }
 @utility ayra-mouth { animation: speak .28s ease-in-out infinite; }
 @utility ayra-ripple { animation: ripple 2.4s ease-out infinite; }
-@utility ayra-orbit { animation: orbit 10s linear infinite; }
 .core[data-state="speaking"] { --core-glow: var(--accent); }
 .core[data-state="thinking"] .ayra-eye { animation-duration: 5s, .6s; }
 .core[data-state="listening"] .ayra-breathe { animation-duration: 3s; }
-.core[data-state="executing"] .ayra-orbit { animation-duration: 3s; }
 
 /* Layout-only dashboard positioning; appearance tokens remain unchanged. */
 .dashboard-header { grid-template-columns: auto minmax(0, 1fr) auto; }
@@ -347,4 +338,46 @@ html { transition: color .7s; }
   .dashboard-command { border-radius: 28px; }
   .dashboard-command > input { width: 100%; }
   .dashboard-secondary .analytics-layout { grid-template-columns: minmax(0, 1fr) minmax(110px, .8fr); }
+}
+
+/* AYRA cinematic presentation, scoped to the existing hero only. */
+:root {
+  --ayra-scene-base: oklch(0.16 0.035 240);
+  --ayra-scene-foreground: oklch(0.95 0.02 230);
+  --ayra-scene-muted: oklch(0.78 0.04 240);
+  --ayra-scene-panel: oklch(0.17 0.05 255 / 0.75);
+}
+.dashboard-hero {
+  isolation: isolate;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  min-height: 540px;
+  background: var(--ayra-scene-base);
+  color: var(--ayra-scene-foreground);
+  --foreground: var(--ayra-scene-foreground);
+  --muted-foreground: var(--ayra-scene-muted);
+  --card: var(--ayra-scene-panel);
+}
+.dashboard-hero .hero-avatar { position: absolute; inset: 0; height: auto; z-index: -1; }
+.ayra-cinematic-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.ayra-banner-shade { position: absolute; inset: 0; background: linear-gradient(0deg, var(--ayra-scene-base) 0%, transparent 55%), linear-gradient(90deg, var(--ayra-scene-base), transparent 65%); }
+.ayra-banner-portrait { position: absolute; top: 0; right: 3%; width: 49%; height: 85%; }
+.ayra-banner-look { mask-image: linear-gradient(90deg, transparent, black 20%, black 85%, transparent), linear-gradient(180deg, black 65%, transparent 100%); mask-composite: intersect; }
+.dashboard-hero .hero-identity { align-self: center; width: 46%; padding: 32px; text-align: left; min-height: 340px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.dashboard-hero .hero-identity > .panel { max-height: 220px; overflow-y: auto; margin-left: 0; }
+.dashboard-hero .hero-streams { grid-column: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 16px 32px 24px; align-self: end; }
+.dashboard-hero .hero-streams > div { display: flex; flex-direction: row; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: 6px; }
+.dashboard-hero .hero-streams > div > div:first-child { flex-basis: 100%; }
+.dashboard-hero .hero-streams > div > .panel { width: auto; }
+@media (max-width: 767px) {
+  .dashboard-hero { min-height: 560px; }
+  .ayra-cinematic-scene { height: 360px; object-position: 62% top; }
+  .ayra-banner-portrait { right: 0; width: 58%; height: 350px; }
+  .dashboard-hero .hero-identity { min-height: 340px; width: 52%; padding: 16px; }
+  .dashboard-hero .hero-streams { padding: 16px; gap: 12px; }
+}
+@media (max-width: 359px) {
+  .dashboard-hero .hero-identity { padding: 12px; }
+  .dashboard-hero .hero-streams { padding: 12px; gap: 8px; }
 }

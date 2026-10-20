@@ -1,5 +1,12 @@
 # Roadmap — Dashboard layout rearrangement
 
+## AYRA cinematic banner
+- [x] Blend the existing AYRA identity into a full-width cinematic banner, retaining look/state controls.
+- [x] Remove obsolete rotating circular dots and rings.
+- [x] Verify banner rendering, existing interactions and available tests without changing other sections.
+
+Banner verification: inspected desktop and mobile screenshots; retained 32 buttons and 2 inputs; zero obsolete ring/orbit elements; lookbook opens and microphone changes the core to listening. No horizontal overflow at 320, 390, 768 and 1026px; no browser errors. Existing routing test passed (1/1), automatic build OK. Dashboard route, command handlers and backend files unchanged; command service was not re-tested in this presentation-only update.
+
 - [x] Inventory existing modules, controls and baseline behavior.
 - [x] Rearrange hero, command bar, statistics and module columns without redesigning.
 - [x] Verify preservation, interactions, desktop/tablet/mobile overflow and available tests.
