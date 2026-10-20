@@ -225,14 +225,16 @@ export function JarvisCore({
                 style={{ opacity: k === look ? 1 : 0 }}
               />
             ))}
-            {state === "idle" && !override && (
+            {playing && !override && (
               <video
+                key={commandKey ?? 0}
                 src={ayraWalk.url}
                 poster={ayraCyanJacket}
                 autoPlay
                 muted
-                loop
                 playsInline
+                onEnded={() => setPlaying(false)}
+                onError={() => setPlaying(false)}
                 aria-hidden="true"
                 className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
               />
