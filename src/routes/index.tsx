@@ -216,6 +216,8 @@ function Dashboard() {
                           <div key={l} className="panel flex min-w-0 items-center gap-2 px-2 py-1.5 text-xs"><I className="h-4 w-4 text-primary" />{l}</div>
                         ))}
                       </div>
+                    ))}
+                  </div>
           </section>
           {/* Voice bar */}
           <div className="dashboard-command panel mx-auto grid w-full max-w-4xl items-center gap-3 rounded-full px-3 py-2">
@@ -257,8 +259,15 @@ function Dashboard() {
                 <div className="panel p-3">
                   <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">RECENT ACTIONS</h3><span className="rounded border border-border px-2 py-0.5 text-xs">View All</span></div>
                   {actions.map(([t, w]) => (<div key={t} className="flex items-center gap-2 py-1 text-xs"><Activity className="h-3.5 w-3.5 text-primary" /><span className="flex-1">{t}</span><span className="text-muted-foreground">{w}</span></div>))}
-                </div>              <div className="status-layout grid min-w-0 grid-cols-[minmax(0,1fr)_100px] items-center gap-3">
-  
+                </div>
+              <div className="status-layout grid min-w-0 grid-cols-[minmax(0,1fr)_100px] items-center gap-3">
+                <div className="panel p-3">
+                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">AYRA SYSTEM STATUS</h3><Live /></div>
+                  {status.map(([I, l, s]) => (<div key={l} className="flex items-center gap-2 py-1 text-sm"><I className="h-4 w-4 text-primary" /><span className="flex-1">{l}</span><span className="text-success">{s}</span></div>))}
+                  <div className="flex items-center gap-2 py-1 text-sm"><Activity className="h-4 w-4 text-primary" /><span className="flex-1">System Load</span><div className="h-2 w-16 rounded bg-muted"><div className="h-2 w-1/4 rounded bg-primary" /></div>24%</div>
+                </div>
+                <img src={globe} alt="Globe" loading="lazy" width={816} height={816} className="w-full self-start rounded-full object-cover [mask-image:radial-gradient(circle,black_55%,transparent_72%)]" />
+              </div>
           </div>
           <div className="dashboard-secondary grid min-w-0 items-start gap-4 md:grid-cols-2 xl:grid-cols-[minmax(190px,0.8fr)_minmax(0,1.2fr)_minmax(0,1.2fr)]">
                 {/* Brands */}
@@ -288,13 +297,6 @@ function Dashboard() {
                   {insights.map(([t, c]) => (<div key={t} className="flex items-center gap-2 py-1 text-xs">{c === "text-danger" ? <AlertTriangle className={`h-3.5 w-3.5 ${c}`} /> : <CheckCircle2 className={`h-3.5 w-3.5 ${c}`} />}{t}</div>))}
                 </div>
             </div>
-              <div className="panel p-3">
-                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">AYRA SYSTEM STATUS</h3><Live /></div>
-                  {status.map(([I, l, s]) => (<div key={l} className="flex items-center gap-2 py-1 text-sm"><I className="h-4 w-4 text-primary" /><span className="flex-1">{l}</span><span className="text-success">{s}</span></div>))}
-                  <div className="flex items-center gap-2 py-1 text-sm"><Activity className="h-4 w-4 text-primary" /><span className="flex-1">System Load</span><div className="h-2 w-16 rounded bg-muted"><div className="h-2 w-1/4 rounded bg-primary" /></div>24%</div>
-                </div>
-                <img src={globe} alt="Globe" loading="lazy" width={816} height={816} className="w-full self-start rounded-full object-cover [mask-image:radial-gradient(circle,black_55%,transparent_72%)]" />
-              </div>
               <div className="panel p-3">
                 <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">LIVE AGENT ACTIVITY</h3>
                   {agentTheme ? <button onClick={() => setAgentTheme(null)} className="rounded border border-border px-2 py-0.5 text-xs hover:bg-primary/15">Reset to AYRA</button> : <span className="text-xs text-muted-foreground">Tap an agent</span>}
