@@ -15,7 +15,7 @@ import ayraCrystal from "@/assets/ayra-crystal.jpg";
 import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 import ayraCommandCutout from "@/assets/ayra-command-cutout.png";
-import ayraWalk from "@/assets/videos/ayra-walk.mp4.asset.json";
+import ayraWalk from "@/assets/videos/ayra-idle-loop.mp4.asset.json";
 
 export type CoreState =
   | "idle"
@@ -182,12 +182,13 @@ export function JarvisCore({
     applyTheme(theme ?? LOOK_THEME[look]);
     applyBackground(LOOK_BG[look]);
   }, [look, theme]);
-  // Play the clip once per real command, then rest on its opening frame (never an old still).
+  // AYRA stays alive: seamless smile/glance loop from her clip (no walking away).
+  // A new real command restarts it so she turns her smile to the user.
   useEffect(() => {
     const v = video.current;
-    if (!v || commandKey == null || !clipVisible) return;
+    if (!v || !clipVisible) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    v.currentTime = 0;
+    if (commandKey != null) v.currentTime = 0;
     void v.play().catch(() => undefined);
   }, [commandKey, clipVisible]);
   return (
@@ -243,7 +244,7 @@ export function JarvisCore({
                 muted
                 playsInline
                 preload="auto"
-                onEnded={(e) => { e.currentTarget.currentTime = 0; }}
+                loop
                 aria-hidden="true"
                 className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
               />
