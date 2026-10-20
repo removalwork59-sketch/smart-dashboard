@@ -9,7 +9,8 @@ export function createLovableAiGatewayRunIdFetch(initialRunId?: string) {
   return {
     fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
       const headers = new Headers(init?.headers);
-      if (runId && !headers.has(LOVABLE_AIG_RUN_ID_HEADER)) headers.set(LOVABLE_AIG_RUN_ID_HEADER, runId);
+      if (runId && !headers.has(LOVABLE_AIG_RUN_ID_HEADER))
+        headers.set(LOVABLE_AIG_RUN_ID_HEADER, runId);
       const response = await fetch(input, { ...init, headers });
       runId ??= response.headers.get(LOVABLE_AIG_RUN_ID_HEADER)?.trim() || undefined;
       return response;
@@ -30,7 +31,9 @@ Never invent precise new figures beyond those above; speak like a helpful comman
 export function streamAyraReply(request: Request, command: string) {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("LOVABLE_API_KEY is not configured");
-  const runIdFetch = createLovableAiGatewayRunIdFetch(request.headers.get(LOVABLE_AIG_RUN_ID_HEADER)?.trim() || undefined);
+  const runIdFetch = createLovableAiGatewayRunIdFetch(
+    request.headers.get(LOVABLE_AIG_RUN_ID_HEADER)?.trim() || undefined,
+  );
   const provider = createOpenAI({
     baseURL: "https://ai.gateway.lovable.dev/v1",
     apiKey,

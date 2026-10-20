@@ -20,7 +20,10 @@ export const Route = createFileRoute("/api/ayra")({
           });
         } catch (error) {
           console.error("AYRA command failed:", error);
-          return Response.json({ error: "AYRA is unavailable right now. Please try again." }, { status: 502 });
+          return Response.json(
+            { error: "AYRA is unavailable right now. Please try again." },
+            { status: 502 },
+          );
         }
       },
     },

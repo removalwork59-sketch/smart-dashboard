@@ -1,8 +1,20 @@
 /** Agent dress code table — each agent role owns its dress colour (hue, chroma). */
-export type DressCode = { role: string; dress: string; primary: number; accent: number; c?: number };
+export type DressCode = {
+  role: string;
+  dress: string;
+  primary: number;
+  accent: number;
+  c?: number;
+};
 
 export const AGENT_DRESS_CODE: Record<string, DressCode> = {
-  "Hermes Agent": { role: "Market Intelligence", dress: "Royal Gold", primary: 80, accent: 95, c: 0.15 },
+  "Hermes Agent": {
+    role: "Market Intelligence",
+    dress: "Royal Gold",
+    primary: 80,
+    accent: 95,
+    c: 0.15,
+  },
   "Code Agent": { role: "Engineering", dress: "Matrix Green", primary: 150, accent: 165 },
   "SEO Agent": { role: "Search & Growth", dress: "Electric Violet", primary: 295, accent: 280 },
   "Data Agent": { role: "Analytics", dress: "Deep Cyan", primary: 220, accent: 200 },
