@@ -556,4 +556,4 @@ html, body { overflow-x: hidden; }
 /* AYRA's full face visible and centred (no zoom-crop) */
 .immersive-dashboard .dashboard-hero .ayra-banner-video, .immersive-dashboard .dashboard-hero .ayra-banner-look { object-fit: contain; object-position: center center; }
 /* Office background follows AYRA's current look and the selected agent's colour */
-.ayra-office-wall { background: radial-gradient(ellipse at 30% 30%, var(--background), color-mix(in oklab, var(--background) 80%, var(--primary))); transition: background 0.8s ease; }
+.ayra-office-wall { background: radial-gradient(ellipse at 30% 30%, var(--background), color-mix(in oklab, var(--background) 62%, var(--primary))); transition: background 0.8s ease; }
