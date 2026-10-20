@@ -412,3 +412,85 @@ html { transition: color .7s; }
  .action-workspace { grid-column: 1; grid-row: 2; padding: 16px; border-right: 0; border-block: 1px solid var(--border); }
  .dashboard-hero .hero-streams { grid-row: 3; }
 }
+
+/* Immersive presentation: existing dashboard tools remain in document order. */
+:root {
+  --command-depth-shadow: 0 28px 55px color-mix(in oklab, var(--ayra-scene-base) 80%, transparent);
+  --command-glass: color-mix(in oklab, var(--ayra-scene-panel) 85%, transparent);
+  --command-edge-light: color-mix(in oklab, var(--accent) 35%, transparent);
+}
+.immersive-dashboard .dashboard-shell { display: block; padding-inline: 0; }
+.immersive-dashboard .dashboard-header { position: relative; z-index: 10; border-bottom: 1px solid var(--border); }
+.command-navigation { background: var(--background); overflow-y: auto; width: min(340px, 90vw); }
+.command-navigation .dashboard-nav { overflow: visible; padding: 0; }
+.command-navigation .dashboard-nav > button { width: 100%; height: auto; justify-content: flex-start; }
+.immersive-dashboard .dashboard-main { gap: 20px; }
+.immersive-dashboard .dashboard-main > :not(.dashboard-hero) { margin-inline: 20px; width: auto; }
+.immersive-dashboard .dashboard-main > .dashboard-command { width: calc(100% - 40px); margin-inline: auto; }
+.immersive-dashboard .dashboard-hero {
+  min-height: min(880px, max(660px, calc(100svh - 94px)));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  transition: grid-template-columns 1.1s cubic-bezier(.2,.8,.2,1);
+  border-radius: 0 0 36px 36px;
+  border-bottom: 1px solid var(--border);
+  perspective: 1400px;
+}
+.immersive-dashboard .dashboard-hero[data-task-running="true"] { grid-template-columns: minmax(0, 1.65fr) minmax(0, .75fr); }
+.command-center-scene { position: absolute; inset: 0; pointer-events: none; z-index: -3; }
+.command-center-scene canvas { display: block; }
+.immersive-dashboard .hero-avatar { z-index: -2; overflow: visible; }
+.immersive-dashboard .ayra-cinematic-scene { display: none; }
+.immersive-dashboard .ayra-banner-shade { background: linear-gradient(0deg, var(--ayra-scene-base), transparent 65%); }
+.immersive-dashboard .ayra-banner-portrait {
+  right: 0; top: 20px; height: calc(100% - 110px); width: 48%;
+  transition: right 1.2s ease, width 1.2s ease, opacity 1.2s ease;
+}
+.immersive-dashboard .ayra-banner-look { object-fit: contain; object-position: center top; mask-image: linear-gradient(180deg, black 76%, transparent); mask-composite: add; }
+.immersive-dashboard .core[data-look="default"] .ayra-sway { animation: ayra-peek 22s cubic-bezier(.4,0,.2,1) infinite; }
+.immersive-dashboard .dashboard-hero[data-task-running="true"] .ayra-banner-portrait { right: -10%; width: 44%; opacity: .72; }
+.immersive-dashboard .dashboard-hero[data-task-running="true"] .ayra-sway { animation: none; transform: translateX(6%) scale(.9); }
+.immersive-dashboard .hero-identity { min-height: 440px; padding: 28px 32px; z-index: 2; }
+.immersive-dashboard .hero-identity > :first-child { font-size: 40px; }
+.immersive-dashboard .hero-identity > .panel { background: var(--command-glass); }
+.immersive-dashboard .action-workspace {
+  margin: 30px 0 22px 32px; padding: 24px; align-self: center;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--command-glass); backdrop-filter: blur(18px);
+  transform: rotateY(3deg); transform-origin: left center;
+  box-shadow: var(--command-depth-shadow), inset 0 1px 0 var(--command-edge-light);
+  transition: transform 1.1s ease, background 1.1s ease;
+}
+.immersive-dashboard [data-task-running="true"] .action-workspace { transform: rotateY(0); }
+.immersive-dashboard .hero-streams { z-index: 2; background: var(--command-glass); border-top: 1px solid var(--border); border-radius: 50% 50% 0 0 / 18px 18px 0 0; }
+.workspace-file-scene { display: flex; align-items: center; gap: 24px; padding-block: 16px; perspective: 700px; }
+.workspace-folder { position: relative; width: 68px; height: 48px; flex-shrink: 0; transform-style: preserve-3d; }
+.workspace-folder-back { position: absolute; inset: 0; background: var(--primary); border-radius: 3px; }
+.workspace-folder-back::before { content: ""; position: absolute; top: -6px; width: 28px; height: 8px; background: var(--primary); border-radius: 3px 3px 0 0; }
+.workspace-folder-front { position: absolute; inset: 8px -3px -3px; border: 1px solid var(--accent); background: var(--command-glass); transform-origin: bottom; transform: rotateX(-28deg); animation: folder-open .7s ease both; }
+.workspace-file-document { display: flex; flex-direction: column; gap: 4px; min-width: 0; overflow-wrap: anywhere; animation: fade-up .5s ease both; }
+.workspace-request-path { display: flex; gap: 12px; align-items: center; padding: 14px 0; color: var(--accent); }
+.workspace-request-path > span { display: flex; gap: 6px; align-items: center; }
+.workspace-path-line { flex: 1; height: 1px; background: var(--border); animation: received-signal .5s ease both; }
+@keyframes received-signal { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes folder-open { from { transform: rotateX(0); } to { transform: rotateX(-28deg); } }
+@keyframes ayra-peek {
+  0%, 100% { transform: translateX(0) scale(1); }
+  18% { transform: translateX(10%) scale(.94); }
+  35% { transform: translateX(0) scale(1.03); }
+  55% { transform: translateX(-110%) scale(.88); }
+  70% { transform: translateX(-105%) scale(.96); }
+  86% { transform: translateX(4%) scale(.94); }
+}
+@media (max-width: 767px) {
+ .immersive-dashboard .dashboard-hero, .immersive-dashboard .dashboard-hero[data-task-running="true"] { grid-template-columns: minmax(0,1fr); min-height: 900px; }
+ .immersive-dashboard .ayra-banner-portrait { top: 10px; right: 0; width: 72%; height: 380px; }
+ .immersive-dashboard .hero-identity { min-height: 350px; padding: 18px; }
+ .immersive-dashboard .hero-identity > .panel { max-width: 70%; max-height: 100px; }
+ .immersive-dashboard .action-workspace { margin: 10px 14px 20px; padding: 16px; transform: none; }
+ .immersive-dashboard .dashboard-main > :not(.dashboard-hero) { margin-inline: 12px; }
+ .immersive-dashboard .dashboard-main > .dashboard-command { width: calc(100% - 24px); }
+ .immersive-dashboard .core[data-look="default"] .ayra-sway { animation-name: ayra-mobile-peek; }
+ .immersive-dashboard .dashboard-hero[data-task-running="true"] .ayra-banner-portrait { width: 60%; right: -6%; }
+ .workspace-request-path { gap: 6px; flex-wrap: wrap; }
+}
+@keyframes ayra-mobile-peek { 0%,100% { transform: translateX(0); } 40% { transform: translateX(-30%) scale(.94); } 75% { transform: translateX(8%) scale(1.02); } }

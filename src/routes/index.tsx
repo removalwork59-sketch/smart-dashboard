@@ -52,7 +52,10 @@ import {
   CircleDot,
   Sparkles,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { isWorkspaceRunning } from "@/lib/command-center";
 import { JarvisCore, stateLabel, type CoreState, type AyraLook } from "@/components/JarvisCore";
 import { ModulePanel } from "@/components/ModulePanel";
 import { LookbookPanel } from "@/components/LookbookPanel";
@@ -61,18 +64,20 @@ import globe from "@/assets/globe.jpg";
 import worldmap from "@/assets/worldmap.jpg";
 import { ActionWorkspace } from "@/components/ActionWorkspace";
 import { applyTaskEvent, type TaskEvent, type WorkspaceTask } from "@/lib/workspace-events";
+const CommandCenterScene = lazy(() => import("@/components/CommandCenterScene"));
 
 export const Route = createFileRoute("/")({
+  ssr: false,
   head: () => ({
     meta: [
-      { title: "Jarvis Dashboard — Software Vala" },
+      { title: "AYRA 3D Command Center — Software Vala" },
       {
         name: "description",
         content:
-          "Jarvis AI command center for Software Vala: live stats, brands, agents and insights.",
+          "AYRA immersive command center for Software Vala with verified task output, files, agents and dashboard insights.",
       },
-      { property: "og:title", content: "Jarvis Dashboard — Software Vala" },
-      { property: "og:description", content: "Jarvis AI command center for Software Vala." },
+      { property: "og:title", content: "AYRA 3D Command Center — Software Vala" },
+      { property: "og:description", content: "Software Vala’s immersive AYRA workspace with real task events and preserved dashboard tools." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -196,7 +201,7 @@ function Dashboard() {
   const [lookbook, setLookbook] = useState(false);
   const [agentTheme, setAgentTheme] = useState<string | null>(null);
   const timers = useRef<number[]>([]);
-  const [collapsed, setCollapsed] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [tilt, setTilt] = useState<[number, number]>([0, 0]);
   const [hidden, setHidden] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -209,7 +214,7 @@ function Dashboard() {
       }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
         e.preventDefault();
-        setCollapsed((c) => !c);
+        setMenuOpen((c) => !c);
       }
     };
     document.addEventListener("visibilitychange", v);
@@ -305,21 +310,23 @@ function Dashboard() {
     }
   };
   const openModule = (i: number) => {
+    setMenuOpen(false);
     setActive(i);
     setOpen(i);
   };
   return (
-    <div className={`min-h-screen text-foreground ${hidden || open !== null ? "paused" : ""}`}>
+    <div className={`immersive-dashboard min-h-screen text-foreground ${hidden || open !== null ? "paused" : ""}`}>
       {/* Top bar */}
       <header className="dashboard-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2">
-        <button
-          onClick={() => setCollapsed((c) => !c)}
+        <Button variant="ghost" size="icon"
+          onClick={() => setMenuOpen((c) => !c)}
+          aria-expanded={menuOpen}
           aria-label="Toggle menu (Ctrl+B)"
           title="Toggle menu (Ctrl+B)"
           className="rounded p-1 hover:bg-muted"
         >
           <Menu className="h-6 w-6 text-primary" />
-        </button>
+        </Button>
         <div className="header-brand flex min-w-0 items-center gap-2">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-primary glow-icon font-display text-xl font-black text-primary">
             S
@@ -372,11 +379,12 @@ function Dashboard() {
 
       <div className="dashboard-shell flex flex-col gap-4 px-3 pb-4 lg:flex-row">
         {/* Sidebar */}
-        <aside
-          className={`dashboard-nav flex shrink-0 gap-1 transition-all duration-300 lg:flex-col ${collapsed ? "lg:w-14" : "lg:w-44"}`}
-        >
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+        <SheetContent side="left" className="command-navigation" aria-describedby={undefined}>
+          <SheetTitle className="font-display text-primary">Software Vala</SheetTitle>
+          <nav aria-label="Dashboard navigation" className="dashboard-nav flex flex-col gap-1 mt-5">
           {nav.map(([I, label], i) => (
-            <button
+            <Button variant="ghost"
               key={label}
               onClick={() => openModule(i)}
               title={label}
@@ -385,21 +393,25 @@ function Dashboard() {
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border bg-muted/50">
                 <I className="h-4 w-4 text-primary glow-icon" />
               </span>
-              {!collapsed && label}
-            </button>
+              {label}
+            </Button>
           ))}
-        </aside>
+          </nav>
+        </SheetContent>
+        </Sheet>
 
         <main className="dashboard-main grid min-w-0 flex-1 content-start gap-4">
           {/* Jarvis core — existing identity, avatar and input/output groups */}
           <section
             className="dashboard-hero relative"
+            data-task-running={isWorkspaceRunning(workspaceTask)}
             onMouseMove={(e) => {
               const b = e.currentTarget.getBoundingClientRect();
               setTilt([(e.clientX - b.left) / b.width - 0.5, (e.clientY - b.top) / b.height - 0.5]);
             }}
             onMouseLeave={() => setTilt([0, 0])}
           >
+            <Suspense fallback={null}><CommandCenterScene tilt={tilt} running={isWorkspaceRunning(workspaceTask)} /></Suspense>
             <ActionWorkspace task={workspaceTask} onTask={setWorkspaceTask} />
             <div className="hero-identity relative min-w-0 text-center md:text-left">
               <div className="pt-3 font-display text-3xl font-black tracking-[0.3em] text-primary glow-text">

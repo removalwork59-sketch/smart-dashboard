@@ -1,5 +1,11 @@
 # Roadmap — Dashboard layout rearrangement
 
+## Immersive 3D command center
+- [ ] Retain every navigation option in an accessible slide-out menu.
+- [ ] Add full-screen curved 3D environment and AYRA foreground/background movement without replacing existing look controls.
+- [ ] Expand workspace from actual task status and polish real file/extraction/request visuals.
+- [ ] Verify navigation, real operations, motion, screen sizes and tests; report unavailable external services honestly.
+
 ## Real-time action workspace
 - [x] Define verified task event sources and external connection requirements.
 - [x] Build split AYRA/action presentation with truthful idle, running, result and error states.
