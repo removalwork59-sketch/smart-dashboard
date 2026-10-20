@@ -264,6 +264,7 @@ export function JarvisCore({
                 muted
                 playsInline
                 preload="auto"
+                autoPlay
                 loop
                 aria-hidden="true"
                 className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
