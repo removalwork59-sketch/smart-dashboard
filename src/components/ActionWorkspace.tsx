@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   Bot,
@@ -41,11 +41,13 @@ export function ActionWorkspace({
   onTask: (task: WorkspaceTask) => void;
 }) {
   const [selected, setSelected] = useState<WorkspaceKind | null>(null);
+  useEffect(() => { setSelected(null); }, [task?.id]);
   const input = useRef<HTMLInputElement>(null);
   const mode = selected ?? task?.kind ?? "response";
   const relevant =
     task && (mode === task.kind || (mode === "network" && task.kind === "response")) ? task : null;
   const readFile = async (file: File) => {
+    setSelected(null);
     const id = Date.now();
     const next: WorkspaceTask = {
       id,
@@ -201,6 +203,24 @@ export function ActionWorkspace({
               <dd>{relevant.latencyMs !== undefined ? `${relevant.latencyMs} ms` : "—"}</dd>
             </div>
           </dl>
+          {(relevant.kind === "files" || relevant.kind === "extraction") && (
+            <div className="workspace-file-scene" data-status={relevant.status}>
+              <FolderVisual />
+              <div className="workspace-file-document">
+                <FileText className="h-6 w-6 text-accent" />
+                <span>{relevant.title}</span>
+                <span className="text-xs text-muted-foreground">{relevant.bytes.toLocaleString()} B · {relevant.status}</span>
+              </div>
+            </div>
+          )}
+          {(mode === "network" || relevant.kind === "response") && (
+            <div className="workspace-request-path" key={`${relevant.id}-${relevant.bytes}`}>
+              <span><Network className="h-4 w-4" />Browser</span>
+              <span className="workspace-path-line" />
+              <span><ServerVisual />AYRA</span>
+              <span className="text-xs text-muted-foreground">{relevant.httpStatus ?? "Awaiting headers"}</span>
+            </div>
+          )}
           <div className="workspace-output">
             <div className="flex items-center gap-2 text-xs text-accent mb-2">
               {relevant.status === "error" ? (
@@ -244,4 +264,11 @@ export function ActionWorkspace({
       )}
     </section>
   );
+}
+
+function FolderVisual() {
+  return <div className="workspace-folder" aria-hidden="true"><div className="workspace-folder-back" /><div className="workspace-folder-front" /></div>;
+}
+function ServerVisual() {
+  return <Bot className="h-4 w-4" />;
 }

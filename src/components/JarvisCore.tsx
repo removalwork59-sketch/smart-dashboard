@@ -14,6 +14,7 @@ import ayraBob from "@/assets/ayra-bob.jpg";
 import ayraCrystal from "@/assets/ayra-crystal.jpg";
 import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
+import ayraCommandCutout from "@/assets/ayra-command-cutout.png";
 
 export type CoreState =
   | "idle"
@@ -210,14 +211,14 @@ export function JarvisCore({
             {(Object.keys(AYRA_LOOKS) as AyraLook[]).map((k) => (
               <img
                 key={k}
-                src={AYRA_LOOKS[k]}
+                  src={k === "default" ? ayraCommandCutout : AYRA_LOOKS[k]}
                 alt={k === look ? "AYRA holographic AI avatar" : ""}
                 aria-hidden={k !== look}
                 width={768}
                 height={1024}
                 loading={k === "default" ? "eager" : "lazy"}
                 className="ayra-banner-look absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700"
-                style={{ opacity: k === look && look !== "default" ? 1 : 0 }}
+                style={{ opacity: k === look ? 1 : 0 }}
               />
             ))}
             {/* holographic sheen matched to dashboard palette */}
