@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { applyTheme, type DressCode } from "@/lib/agent-dress-code";
 import ayraDefault from "@/assets/ayra-cyan.jpg";
 import ayraCyanSide from "@/assets/ayra-cyan-side.jpg";
@@ -54,6 +54,7 @@ export const AYRA_LOOKS = {
   veil: ayraVeil,
 } as const;
 export type AyraLook = keyof typeof AYRA_LOOKS;
+const CLIP_LOOK: AyraLook = "cyanJacket";
 
 /** Which look AYRA wears per core state (when no occasion overrides it). */
 const stateLook: Record<CoreState, AyraLook> = {
