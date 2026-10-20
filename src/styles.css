@@ -490,3 +490,36 @@ html { transition: color .7s; }
   .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .ayra-banner-portrait { right: 0; width: 72%; }
   .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { min-height: 560px; }
 }
+
+/* AYRA's office: one fixed, edge-to-edge environment from the header down; never resized by tasks */
+.immersive-dashboard .dashboard-main { padding-top: 0; }
+.immersive-dashboard .dashboard-hero,
+.immersive-dashboard .dashboard-hero[data-task-running="true"],
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) {
+  margin-top: 0; border-radius: 0; border: 0; overflow: hidden;
+  height: clamp(560px, calc(100svh - var(--office-top, 64px)), 900px); min-height: 0;
+  grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto;
+}
+.immersive-dashboard .dashboard-hero .ayra-banner-portrait,
+.immersive-dashboard .dashboard-hero[data-task-running="true"] .ayra-banner-portrait,
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .ayra-banner-portrait {
+  top: 0; right: 0; width: 58%; height: 100%; border: 0; border-radius: 0; box-shadow: none; background: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 30%, black 85%, transparent), linear-gradient(180deg, black 70%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 30%, black 85%, transparent), linear-gradient(180deg, black 70%, transparent);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.immersive-dashboard .dashboard-hero .ayra-banner-video, .immersive-dashboard .dashboard-hero .ayra-banner-look { object-fit: cover; object-position: center top; border-radius: 0; }
+.immersive-dashboard .dashboard-hero .hero-identity,
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .hero-identity { grid-column: 1; grid-row: 1; width: 46%; min-height: 0; justify-self: start; }
+.immersive-dashboard .dashboard-hero .hero-streams { grid-row: 2; }
+/* The task area floats inside the office's left half; the office itself keeps its size */
+.immersive-dashboard .dashboard-hero .preserved-action-workspace:not([hidden]) {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 50%; z-index: 3; overflow-y: auto; display: grid; align-content: center;
+}
+@media (max-width: 767px) {
+  .immersive-dashboard .dashboard-hero, .immersive-dashboard .dashboard-hero[data-task-running="true"], .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { height: clamp(620px, calc(100svh - var(--office-top, 170px)), 900px); }
+  .immersive-dashboard .dashboard-hero .ayra-banner-portrait, .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .ayra-banner-portrait { width: 100%; height: 72%;
+    -webkit-mask-image: linear-gradient(180deg, black 60%, transparent); mask-image: linear-gradient(180deg, black 60%, transparent); }
+  .immersive-dashboard .dashboard-hero .hero-identity, .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .hero-identity { width: 100%; align-self: end; }
+  .immersive-dashboard .dashboard-hero .preserved-action-workspace:not([hidden]) { width: 100%; bottom: auto; max-height: 60%; }
+}
