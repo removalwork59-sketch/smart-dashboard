@@ -291,7 +291,7 @@ html { transition: color .7s; }
 .header-search { grid-column: 1 / -1; grid-row: 3; }
 .dashboard-nav { max-width: 100%; overflow-x: auto; padding: 4px 0 8px; }
 .dashboard-hero { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 12px; }
-.hero-avatar { height: 340px; }
+.hero-avatar { height: 340px; overflow: hidden; }
 .hero-streams > div { min-width: 0; }
 .hero-streams > div > .panel { width: 100%; }
 .dashboard-command { grid-template-columns: 48px minmax(0, 1fr) 48px; }
