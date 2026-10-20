@@ -161,18 +161,25 @@ export function JarvisCore({
   state,
   override = null,
   theme = null,
+  commandKey = null,
 }: {
   state: CoreState;
   tilt?: [number, number];
   override?: AyraLook | null;
   theme?: DressCode | null;
+  /** Changes once per real command; AYRA's clip plays once in response, then she holds still. */
+  commandKey?: number | null;
 }) {
   const occasion = activeOccasion();
   const look = override ?? (occasion ? occasion.look : stateLook[state]);
+  const [playing, setPlaying] = useState(false);
   useEffect(() => {
     applyTheme(theme ?? LOOK_THEME[look]);
     applyBackground(LOOK_BG[look]);
   }, [look, theme]);
+  useEffect(() => {
+    if (commandKey != null) setPlaying(true);
+  }, [commandKey]);
   return (
     <div
       className="core pointer-events-none absolute inset-0 grid place-items-center"
@@ -180,6 +187,8 @@ export function JarvisCore({
       data-look={look}
     >
       <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
+      {/* AYRA's office: ambience rebuilt from her current look so it follows every outfit change */}
+      <img key={look} src={AYRA_LOOKS[look]} alt="" aria-hidden="true" className="ayra-office-backdrop" />
       <div className="ayra-banner-shade" />
       <div className="ayra-banner-portrait">
         {state === "verifying" && <div className="scan-line" />}

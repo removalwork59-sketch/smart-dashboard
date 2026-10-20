@@ -477,3 +477,18 @@ html { transition: color .7s; }
 @media (prefers-reduced-motion: reduce) {
   .ayra-banner-video { display: none; }
 }
+
+/* AYRA owns the full banner; a real running task splits it in half */
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { grid-template-columns: minmax(0, 1fr); }
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .hero-identity { grid-column: 1; width: 46%; justify-self: start; }
+.immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .ayra-banner-portrait { right: 8%; width: 46%; }
+.immersive-dashboard .dashboard-hero[data-task-running="true"] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.immersive-dashboard .dashboard-hero[data-task-running="true"] .ayra-banner-portrait { right: 0; width: 46%; }
+.immersive-dashboard .ayra-banner-portrait { transition: right 1s ease, width 1s ease; }
+.ayra-office-backdrop { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; filter: blur(42px) saturate(1.3) brightness(.7); transform: scale(1.25); opacity: .55; animation: fade-up .9s ease both; }
+.ayra-banner-video { animation: fade-up .6s ease both; }
+@media (max-width: 767px) {
+  .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .hero-identity { width: 100%; }
+  .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) .ayra-banner-portrait { right: 0; width: 72%; }
+  .immersive-dashboard .dashboard-hero:not([data-task-running="true"]) { min-height: 560px; }
+}
