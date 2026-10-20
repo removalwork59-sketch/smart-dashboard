@@ -171,15 +171,24 @@ export function JarvisCore({
   commandKey?: number | null;
 }) {
   const occasion = activeOccasion();
-  const look = override ?? (occasion ? occasion.look : stateLook[state]);
-  const [playing, setPlaying] = useState(false);
+  // The walking-clip identity (cyan jacket) is AYRA's standing look; only an explicit
+  // lookbook pick or a special occasion swaps her outfit. stateLook is kept for reference.
+  void stateLook;
+  const look = override ?? (occasion ? occasion.look : CLIP_LOOK);
+  const clipVisible = look === CLIP_LOOK;
+  const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     applyTheme(theme ?? LOOK_THEME[look]);
     applyBackground(LOOK_BG[look]);
   }, [look, theme]);
+  // Play the clip once per real command, then rest on its opening frame (never an old still).
   useEffect(() => {
-    if (commandKey != null) setPlaying(true);
-  }, [commandKey]);
+    const v = video.current;
+    if (!v || commandKey == null || !clipVisible) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.currentTime = 0;
+    void v.play().catch(() => undefined);
+  }, [commandKey, clipVisible]);
   return (
     <div
       className="core pointer-events-none absolute inset-0 grid place-items-center"
@@ -225,16 +234,15 @@ export function JarvisCore({
                 style={{ opacity: k === look ? 1 : 0 }}
               />
             ))}
-            {playing && !override && (
+            {clipVisible && (
               <video
-                key={commandKey ?? 0}
+                ref={video}
                 src={ayraWalk.url}
                 poster={ayraCyanJacket}
-                autoPlay
                 muted
                 playsInline
-                onEnded={() => setPlaying(false)}
-                onError={() => setPlaying(false)}
+                preload="auto"
+                onEnded={(e) => { e.currentTarget.currentTime = 0; }}
                 aria-hidden="true"
                 className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
               />
