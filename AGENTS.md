@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep dashboard layout in the existing dashboard route with scoped layout rules in the global stylesheet; reuse existing sections and handlers so positioning changes do not alter functionality.
+- Render AYRA's cinematic scene through JarvisCore with scoped banner styling and retain its state/look selection logic; this isolates presentation changes from dashboard functionality.

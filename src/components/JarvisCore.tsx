@@ -13,6 +13,7 @@ import ayraGold from "@/assets/ayra-gold.jpg";
 import ayraBob from "@/assets/ayra-bob.jpg";
 import ayraCrystal from "@/assets/ayra-crystal.jpg";
 import ayraVeil from "@/assets/ayra-veil.jpg";
+import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 
 export type CoreState = "idle" | "listening" | "thinking" | "executing" | "verifying" | "speaking" | "completed" | "error";
 export const stateLabel: Record<CoreState, string> = {
@@ -131,16 +132,11 @@ export function JarvisCore({ state, tilt = [0, 0], override = null, theme = null
   const occasion = activeOccasion();
   const look = override ?? (occasion ? occasion.look : stateLook[state]);
   useEffect(() => { applyTheme(theme ?? LOOK_THEME[look]); applyBackground(LOOK_BG[look]); }, [look, theme]);
-  const nodes = Array.from({ length: 14 }, (_, i) => {
-    const a = (i / 14) * Math.PI * 2;
-    return [50 + Math.cos(a) * 46, 50 + Math.sin(a) * 46] as const;
-  });
   return (
     <div className="core pointer-events-none absolute inset-0 grid place-items-center" data-state={state}>
-      <div className="parallax relative aspect-[3/4] h-[92%]" style={{ transform: `perspective(900px) rotateY(${tilt[0] * 8}deg) rotateX(${-tilt[1] * 8}deg)` }}>
-        {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="particle absolute bottom-[20%] h-1 w-1 rounded-full bg-accent" style={{ left: `${15 + i * 7}%`, animationDelay: `${i * 0.6}s` }} />
-        ))}
+      <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
+      <div className="ayra-banner-shade" />
+      <div className="ayra-banner-portrait parallax" style={{ transform: `perspective(900px) rotateY(${tilt[0] * 2}deg) rotateX(${-tilt[1] * 2}deg)` }}>
         {state === "verifying" && <div className="scan-line" />}
         {state === "completed" && <div className="anim-pop absolute inset-[30%] rounded-full border-2 border-success" />}
         {state === "error" && <div className="anim-shake absolute inset-[30%] rounded-full border-2 border-danger" />}
@@ -149,39 +145,18 @@ export function JarvisCore({ state, tilt = [0, 0], override = null, theme = null
             {Array.from({ length: 9 }, (_, i) => <span key={i} className="wave-bar h-full w-1 rounded bg-success" style={{ animationDelay: `${i * 0.08}s` }} />)}
           </div>
         )}
-        <div className="core-aura absolute inset-[14%] rounded-full" />
         {/* AYRA bust: full face, head, neck and shoulders — portrait frame, no circular crop */}
-        <div className="ayra-sway absolute inset-x-[6%] inset-y-[2%]">
+        <div className="ayra-sway absolute inset-0">
           <div className="ayra-breathe absolute inset-0">
             {(Object.keys(AYRA_LOOKS) as AyraLook[]).map((k) => (
               <img key={k} src={AYRA_LOOKS[k]} alt={k === look ? "AYRA holographic AI avatar" : ""} aria-hidden={k !== look}
                 width={768} height={1024} loading={k === "default" ? "eager" : "lazy"}
-                className="absolute inset-0 h-full w-full rounded-[1.6rem] object-cover object-top transition-opacity duration-700 [mask-image:linear-gradient(180deg,black_80%,transparent_99%)]"
-                style={{ opacity: k === look ? 1 : 0 }} />
+                className="ayra-banner-look absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700"
+                style={{ opacity: k === look && look !== "default" ? 1 : 0 }} />
             ))}
             {/* holographic sheen matched to dashboard palette */}
-            <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] bg-gradient-to-b from-accent/10 via-transparent to-primary/20 mix-blend-screen" />
-            <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] shadow-[inset_0_0_40px_oklch(0.72_0.17_235/0.25)]" />
           </div>
         </div>
-        {(state === "listening" || state === "speaking") && [0, 0.8, 1.6].map((d) => (
-          <span key={d} className="ayra-ripple absolute inset-x-[10%] inset-y-[6%] rounded-[2rem] border border-accent" style={{ animationDelay: `${d}s` }} />
-        ))}
-        <div className="ayra-orbit absolute inset-[2%]"><span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_12px_var(--accent)]" /></div>
-        <svg viewBox="0 0 100 133" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-          <g className="ring-spin origin-center" style={{ transformBox: "fill-box" }}>
-            <circle cx="50" cy="50" r="44" fill="none" stroke="var(--primary)" strokeWidth=".4" strokeDasharray="8 4" opacity=".7" />
-          </g>
-          <g className="ring-spin-rev origin-center" style={{ transformBox: "fill-box" }}>
-            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--accent)" strokeWidth=".3" strokeDasharray="2 6" opacity=".8" />
-          </g>
-          {nodes.map(([x, y], i) => (
-            <g key={i}>
-              <line x1="50" y1="50" x2={x} y2={y} stroke="var(--accent)" strokeWidth=".15" className="data-stream" opacity={state === "idle" ? 0.2 : state === "executing" ? 1 : 0.6} />
-              <circle cx={x} cy={y} r=".8" fill="var(--accent)" />
-            </g>
-          ))}
-        </svg>
       </div>
     </div>
   );
