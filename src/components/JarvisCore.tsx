@@ -16,6 +16,7 @@ import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 import ayraCommandCutout from "@/assets/ayra-command-cutout.png";
 import ayraWalk from "@/assets/videos/ayra-idle-loop.mp4.asset.json";
+import ayraOfficeWall from "@/assets/ayra-office-wall.jpg";
 import ayraNamaste from "@/assets/videos/ayra-namaste.mp4.asset.json";
 import ayraWave from "@/assets/videos/ayra-wave.mp4.asset.json";
 import ayraCelebrate from "@/assets/videos/ayra-celebrate.mp4.asset.json";
@@ -217,6 +218,7 @@ export function JarvisCore({
     >
       <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
       {/* AYRA's office: ambience rebuilt from her current look so it follows every outfit change */}
+      <img src={ayraOfficeWall} alt="" aria-hidden="true" className="ayra-office-wall" />
       <img key={look} src={AYRA_LOOKS[look]} alt="" aria-hidden="true" className="ayra-office-backdrop" />
       <div className="ayra-banner-shade" />
       <div className="ayra-banner-portrait">
