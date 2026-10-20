@@ -1,5 +1,11 @@
 # Roadmap — Dashboard layout rearrangement
 
+## Real-time action workspace
+- [ ] Define verified task event sources and external connection requirements.
+- [ ] Build split AYRA/action presentation with truthful idle, running, result and error states.
+- [ ] Connect available real operations; leave unavailable capabilities explicitly unconnected.
+- [ ] Verify actual operations and preservation across screen sizes.
+
 ## AYRA cinematic banner
 - [x] Blend the existing AYRA identity into a full-width cinematic banner, retaining look/state controls.
 - [x] Remove obsolete rotating circular dots and rings.
