@@ -133,7 +133,7 @@ export function JarvisCore({ state, tilt = [0, 0], override = null, theme = null
   const look = override ?? (occasion ? occasion.look : stateLook[state]);
   useEffect(() => { applyTheme(theme ?? LOOK_THEME[look]); applyBackground(LOOK_BG[look]); }, [look, theme]);
   return (
-    <div className="core pointer-events-none absolute inset-0 grid place-items-center" data-state={state}>
+    <div className="core pointer-events-none absolute inset-0 grid place-items-center" data-state={state} data-look={look}>
       <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
       <div className="ayra-banner-shade" />
       <div className="ayra-banner-portrait parallax" style={{ transform: `perspective(900px) rotateY(${tilt[0] * 2}deg) rotateX(${-tilt[1] * 2}deg)` }}>

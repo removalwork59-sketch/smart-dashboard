@@ -1,10 +1,13 @@
 # Roadmap — Dashboard layout rearrangement
 
 ## Real-time action workspace
-- [ ] Define verified task event sources and external connection requirements.
-- [ ] Build split AYRA/action presentation with truthful idle, running, result and error states.
-- [ ] Connect available real operations; leave unavailable capabilities explicitly unconnected.
-- [ ] Verify actual operations and preservation across screen sizes.
+- [x] Define verified task event sources and external connection requirements.
+- [x] Build split AYRA/action presentation with truthful idle, running, result and error states.
+- [x] Connect available real operations; leave unavailable capabilities explicitly unconnected.
+- [x] Verify actual operations and preservation across screen sizes.
+- [ ] Connect calling, live web research, isolated code execution, remote workers and external data/file/API systems — blocked on service selection/accounts and authorized connections; none exist in the copied app.
+
+Workspace verification: real AYRA request returned HTTP 200, 114 received bytes and measured headers latency; completion from actual stream end. Local JSON extraction read two supplied records; malformed JSON showed actual parse error. Four tests passed; automatic build OK. No browser errors or overflow at 320, 390, 768 and 1026px. Existing dashboard sections and server AI calls retained. Cloud provisioned; no persistent file upload, calling or execution connections implemented. Workspace modes explicitly show missing services rather than fabricated activity.
 
 ## AYRA cinematic banner
 - [x] Blend the existing AYRA identity into a full-width cinematic banner, retaining look/state controls.

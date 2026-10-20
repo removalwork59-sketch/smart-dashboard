@@ -13,6 +13,8 @@ import { LookbookPanel } from "@/components/LookbookPanel";
 import { AGENT_DRESS_CODE, dressColor } from "@/lib/agent-dress-code";
 import globe from "@/assets/globe.jpg";
 import worldmap from "@/assets/worldmap.jpg";
+import { ActionWorkspace } from "@/components/ActionWorkspace";
+import { applyTaskEvent, type TaskEvent, type WorkspaceTask } from "@/lib/workspace-events";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -81,6 +83,8 @@ const actions = [
 
 function Dashboard() {
   const [core, setCore] = useState<CoreState>("idle");
+  const [workspaceTask, setWorkspaceTask] = useState<WorkspaceTask | null>(null);
+  const requestCounter = useRef(0);
   const [cmd, setCmd] = useState("");
   const [reply, setReply] = useState("");
   const [open, setOpen] = useState<number | null>(null);
@@ -111,6 +115,10 @@ function Dashboard() {
   const run = async () => {
     const command = cmd.trim();
     if (!command) return;
+    const requestId = ++requestCounter.current;
+    const started = performance.now();
+    setWorkspaceTask({ id: requestId, kind: "response", title: command, status: "running", output: "", bytes: 0, events: ["POST /api/ayra sent"] });
+    const emit = (event: TaskEvent) => setWorkspaceTask((task) => task?.id === requestId ? applyTaskEvent(task, event) : task);
     clear(); setReply(""); setCore("thinking"); setCmd("");
     const q = command.toLowerCase();
     const idx = nav.findIndex(([, l]) => q.includes(l.toLowerCase().split(" ")[0] ?? ""));
@@ -120,9 +128,11 @@ function Dashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
       });
+      emit({ type: "headers", status: res.status, latencyMs: Math.round(performance.now() - started) });
       if (!res.ok || !res.body) {
         const data = (await res.json().catch(() => null)) as { error?: string } | null;
         setReply(data?.error ?? "AYRA could not process that command.");
+        emit({ type: "error", message: data?.error ?? "AYRA could not process that command." });
         setCore("error");
         timers.current.push(window.setTimeout(() => setCore("idle"), 4000));
         return;
@@ -136,13 +146,17 @@ function Dashboard() {
         const { done, value } = await reader.read();
         if (done) break;
         if (first) { setCore("speaking"); first = false; }
-        text += decoder.decode(value, { stream: true });
+        const delta = decoder.decode(value, { stream: true });
+        text += delta;
+        emit({ type: "chunk", text: delta, bytes: value.byteLength });
         setReply(text);
       }
       setCore("completed");
+      emit({ type: "complete" });
       if (idx >= 0) timers.current.push(window.setTimeout(() => { setActive(idx); setOpen(idx); }, 1600));
       timers.current.push(window.setTimeout(() => setCore("idle"), 6000));
     } catch {
+      emit({ type: "error", message: "Connection to AYRA was lost. Please try again." });
       setReply("Connection to AYRA was lost. Please try again.");
       setCore("error");
       timers.current.push(window.setTimeout(() => setCore("idle"), 4000));
@@ -191,6 +205,7 @@ function Dashboard() {
         <main className="dashboard-main grid min-w-0 flex-1 content-start gap-4">
           {/* Jarvis core — existing identity, avatar and input/output groups */}
           <section className="dashboard-hero relative" onMouseMove={(e) => { const b = e.currentTarget.getBoundingClientRect(); setTilt([(e.clientX - b.left) / b.width - 0.5, (e.clientY - b.top) / b.height - 0.5]); }} onMouseLeave={() => setTilt([0, 0])}>
+                  <ActionWorkspace task={workspaceTask} onTask={setWorkspaceTask} />
                   <div className="hero-identity relative min-w-0 text-center md:text-left">
                     <div className="pt-3 font-display text-3xl font-black tracking-[0.3em] text-primary glow-text">AYRA</div>
                     <div className="font-display text-[10px] tracking-[0.3em] text-accent">AI COMMAND CENTER</div>
