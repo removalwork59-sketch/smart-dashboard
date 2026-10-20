@@ -1,5 +1,12 @@
 # Roadmap — Dashboard layout rearrangement
 
+## Genuine AYRA walking and workspace concealment
+- [x] Inspect current assets and identify the full-body rig and animation requirements.
+- [x] Remove portrait sliding, synthetic breathing/sway and task-triggered repositioning.
+- [x] Conceal the entire Action Workspace while keeping its component mounted and all task handlers intact.
+- [ ] Implement and verify genuine walking, facial motion and depth-aware hide-and-seek — blocked on an identity-matching rigged AYRA model and compatible skeletal/facial animation assets.
+- [ ] Verify rendered concealment, stationary portrait and preserved interactions.
+
 ## Immersive 3D command center
 - [x] Retain every navigation option in an accessible slide-out menu.
 - [x] Add full-screen curved 3D environment and AYRA foreground/background movement without replacing existing look controls.

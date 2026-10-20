@@ -154,11 +154,10 @@ function applyBackground(hex: string) {
   s.setProperty("--muted-foreground", light ? "oklch(0.42 0.03 260)" : "oklch(0.78 0.03 240)");
 }
 
-/** Animated AI core: AYRA avatar, rings, aura and neural streams react to `state`.
+/** AYRA portrait and truthful state indicators; no simulated human locomotion.
  *  `theme` (agent dress code) wins over AYRA's outfit colour when set. */
 export function JarvisCore({
   state,
-  tilt = [0, 0],
   override = null,
   theme = null,
 }: {
@@ -181,12 +180,7 @@ export function JarvisCore({
     >
       <img src={ayraCinematic} alt="" aria-hidden="true" className="ayra-cinematic-scene" />
       <div className="ayra-banner-shade" />
-      <div
-        className="ayra-banner-portrait parallax"
-        style={{
-          transform: `perspective(900px) rotateY(${tilt[0] * 2}deg) rotateX(${-tilt[1] * 2}deg)`,
-        }}
-      >
+      <div className="ayra-banner-portrait">
         {state === "verifying" && <div className="scan-line" />}
         {state === "completed" && (
           <div className="anim-pop absolute inset-[30%] rounded-full border-2 border-success" />
@@ -206,8 +200,8 @@ export function JarvisCore({
           </div>
         )}
         {/* AYRA bust: full face, head, neck and shoulders — portrait frame, no circular crop */}
-        <div className="ayra-sway absolute inset-0">
-          <div className="ayra-breathe absolute inset-0">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0">
             {(Object.keys(AYRA_LOOKS) as AyraLook[]).map((k) => (
               <img
                 key={k}

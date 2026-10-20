@@ -412,7 +412,9 @@ function Dashboard() {
             onMouseLeave={() => setTilt([0, 0])}
           >
             <Suspense fallback={null}><CommandCenterScene tilt={tilt} running={isWorkspaceRunning(workspaceTask)} /></Suspense>
-            <ActionWorkspace task={workspaceTask} onTask={setWorkspaceTask} />
+            <div hidden className="preserved-action-workspace">
+              <ActionWorkspace task={workspaceTask} onTask={setWorkspaceTask} />
+            </div>
             <div className="hero-identity relative min-w-0 text-center md:text-left">
               <div className="pt-3 font-display text-3xl font-black tracking-[0.3em] text-primary glow-text">
                 AYRA
