@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { applyTheme, type DressCode } from "@/lib/agent-dress-code";
 import ayraDefault from "@/assets/ayra-cyan.jpg";
 import ayraCyanSide from "@/assets/ayra-cyan-side.jpg";
@@ -16,6 +16,13 @@ import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 import ayraCommandCutout from "@/assets/ayra-command-cutout.png";
 import ayraWalk from "@/assets/videos/ayra-idle-loop.mp4.asset.json";
+import ayraNamaste from "@/assets/videos/ayra-namaste.mp4.asset.json";
+import ayraWave from "@/assets/videos/ayra-wave.mp4.asset.json";
+import ayraCelebrate from "@/assets/videos/ayra-celebrate.mp4.asset.json";
+
+/** One-shot gesture clips from the same photo/outfit; each plays once then returns to the loop. */
+const GESTURE_CLIPS = { namaste: ayraNamaste.url, wave: ayraWave.url, celebrate: ayraCelebrate.url };
+type Gesture = keyof typeof GESTURE_CLIPS;
 
 export type CoreState =
   | "idle"
@@ -178,6 +185,17 @@ export function JarvisCore({
   const look = override ?? (occasion ? occasion.look : CLIP_LOOK);
   const clipVisible = look === CLIP_LOOK;
   const video = useRef<HTMLVideoElement>(null);
+  // Namaste on opening, wave on each new real command, celebration when a task really completes.
+  const [gesture, setGesture] = useState<Gesture | null>("namaste");
+  const firstKey = useRef(commandKey);
+  useEffect(() => {
+    if (commandKey != null && commandKey !== firstKey.current) setGesture("wave");
+  }, [commandKey]);
+  useEffect(() => {
+    if (state === "completed") setGesture("celebrate");
+  }, [state]);
+  const reduced =
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   useEffect(() => {
     applyTheme(theme ?? LOOK_THEME[look]);
     applyBackground(LOOK_BG[look]);
@@ -245,6 +263,21 @@ export function JarvisCore({
                 playsInline
                 preload="auto"
                 loop
+                aria-hidden="true"
+                className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
+              />
+            )}
+            {clipVisible && gesture && !reduced && (
+              <video
+                key={gesture}
+                src={GESTURE_CLIPS[gesture]}
+                data-gesture={gesture}
+                muted
+                playsInline
+                autoPlay
+                preload="auto"
+                onEnded={() => setGesture(null)}
+                onError={() => setGesture(null)}
                 aria-hidden="true"
                 className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
               />
