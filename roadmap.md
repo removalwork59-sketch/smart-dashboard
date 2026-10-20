@@ -1,4 +1,11 @@
-# Roadmap — AYRA avatar upgrade
+# Roadmap — Dashboard layout rearrangement
+
+- [ ] Inventory existing modules, controls and baseline behavior.
+- [ ] Rearrange hero, command bar, statistics and module columns without redesigning.
+- [ ] Verify preservation, interactions, desktop/tablet/mobile overflow and available tests.
+- [ ] Check automatic production-build results and report verification limitations.
+
+## Previous completed work — AYRA avatar upgrade
 
 - [x] View all reference photos (24 unique: white-haired female robot, "ZINRA" label)
 - [x] Generate front-facing AYRA portrait (cyan, matches dashboard palette)
