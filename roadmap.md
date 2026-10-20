@@ -1,10 +1,12 @@
 # Roadmap — Dashboard layout rearrangement
 
 ## Immersive 3D command center
-- [ ] Retain every navigation option in an accessible slide-out menu.
-- [ ] Add full-screen curved 3D environment and AYRA foreground/background movement without replacing existing look controls.
-- [ ] Expand workspace from actual task status and polish real file/extraction/request visuals.
-- [ ] Verify navigation, real operations, motion, screen sizes and tests; report unavailable external services honestly.
+- [x] Retain every navigation option in an accessible slide-out menu.
+- [x] Add full-screen curved 3D environment and AYRA foreground/background movement without replacing existing look controls.
+- [x] Expand workspace from actual task status and polish real file/extraction/request visuals.
+- [x] Verify navigation, real operations, motion, screen sizes and tests; report unavailable external services honestly.
+
+Immersive verification: all 15 navigation dialogs open/close; Ctrl+B, Escape and lookbook access passed. Local two-record JSON extraction, real download and actual malformed JSON error passed. Live AYRA request returned HTTP 200, 61 bytes, measured 1136ms headers latency, and stream completion returned running state to false. AYRA motion changed between frames; reduced-motion preference passed. Canvas and layout checked at 1280, 1026, 768, 390 and 320px with no overflow or page errors. Seven tests passed and automatic build OK. Uses the existing AYRA imagery with cinematic depth motion, not a rigged walking character. External calling, research, code execution and workers remain unconnected; original static dashboard content and display-only controls are preserved, not promoted to operation evidence.
 
 ## Real-time action workspace
 - [x] Define verified task event sources and external connection requirements.

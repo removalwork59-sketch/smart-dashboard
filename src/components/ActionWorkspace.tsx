@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   Bot,
@@ -41,6 +41,7 @@ export function ActionWorkspace({
   onTask: (task: WorkspaceTask) => void;
 }) {
   const [selected, setSelected] = useState<WorkspaceKind | null>(null);
+  useEffect(() => { setSelected(null); }, [task?.id]);
   const input = useRef<HTMLInputElement>(null);
   const mode = selected ?? task?.kind ?? "response";
   const relevant =
