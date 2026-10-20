@@ -231,7 +231,7 @@ function Dashboard() {
             <button aria-label="Send command" onClick={run} className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Send className="h-5 w-5" /></button>
           </div>
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-6">
+          <div className="dashboard-stats grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-6">
             {stats.map(([I, l, v, c]) => (
               <div key={l} className="panel depth-card flex min-w-0 items-center gap-3 p-3">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg border border-border"><I className="h-7 w-7 text-primary glow-icon" /></div>

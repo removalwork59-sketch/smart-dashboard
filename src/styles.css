@@ -304,6 +304,11 @@ html { transition: color .7s; }
 .dashboard-command > button:last-child { grid-column: 4; justify-self: end; }
 .dashboard-overview > *, .dashboard-secondary > *, .dashboard-secondary .panel { min-width: 0; }
 .agent-progress { width: 48px; }
+.paused [role="dialog"], .paused [role="dialog"] * { animation-play-state: running !important; }
+@media (max-width: 359px) {
+  .header-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; }
+  .header-actions > div:last-child { grid-column: 1 / -1; justify-self: end; }
+}
 @media (min-width: 640px) {
   .dashboard-header { grid-template-columns: auto minmax(0, 1fr) auto; }
   .header-actions { grid-column: 3; grid-row: 1; }
@@ -330,6 +335,11 @@ html { transition: color .7s; }
   .dashboard-hero { grid-template-columns: minmax(150px, .7fr) minmax(240px, 1.2fr) minmax(250px, 1fr); min-height: 380px; }
   .hero-streams { grid-column: 3; }
   .hero-streams > div { display: flex; }
+}
+@media (min-width: 1280px) {
+  .dashboard-main > .dashboard-stats { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .dashboard-stats > .panel { gap: 8px; padding: 10px; }
+  .dashboard-stats > .panel > div:first-child { width: 36px; height: 44px; }
 }
 @media (max-width: 639px) {
   .header-actions { justify-content: space-between; gap: 8px; }
