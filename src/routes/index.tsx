@@ -21,6 +21,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Jarvis AI command center for Software Vala: live stats, brands, agents and insights." },
       { property: "og:title", content: "Jarvis Dashboard — Software Vala" },
       { property: "og:description", content: "Jarvis AI command center for Software Vala." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,
@@ -150,20 +152,20 @@ function Dashboard() {
   return (
     <div className={`min-h-screen text-foreground ${hidden || open !== null ? "paused" : ""}`}>
       {/* Top bar */}
-      <header className="flex items-center gap-4 px-4 py-2">
+      <header className="dashboard-header grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2">
         <button onClick={() => setCollapsed((c) => !c)} aria-label="Toggle menu (Ctrl+B)" title="Toggle menu (Ctrl+B)" className="rounded p-1 hover:bg-muted"><Menu className="h-6 w-6 text-primary" /></button>
-        <div className="flex items-center gap-2">
-          <div className="grid h-11 w-11 place-items-center rounded-full border-2 border-primary glow-icon font-display text-xl font-black text-primary">S</div>
+        <div className="header-brand flex min-w-0 items-center gap-2">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-primary glow-icon font-display text-xl font-black text-primary">S</div>
           <div>
             <div className="font-display text-xl font-bold leading-none">Software Vala<sup className="text-xs">™</sup></div>
             <div className="text-xs text-muted-foreground">Your Global Software Partner</div>
           </div>
         </div>
-        <div className="panel mx-6 hidden flex-1 items-center gap-3 px-4 py-2 md:flex">
+        <div className="header-search panel flex min-w-0 items-center gap-3 px-4 py-2">
           <Search className="h-4 w-4 text-primary" />
           <input className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground" placeholder="Search anything... (Software, Project, Customer, Code, Server)" />
         </div>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="header-actions flex min-w-0 items-center gap-3">
           <button className="panel flex items-center gap-2 px-3 py-2 text-sm"><Globe className="h-4 w-4 text-primary" />Global<ChevronDown className="h-4 w-4" /></button>
           <button className="panel p-2"><Sun className="h-5 w-5 text-warn" /></button>
           <button className="panel relative p-2"><Bell className="h-5 w-5 text-primary" /><span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-danger text-[10px]">3</span></button>
@@ -175,61 +177,21 @@ function Dashboard() {
         </div>
       </header>
 
-      <div className="flex gap-3 px-2 pb-4">
+      <div className="dashboard-shell flex flex-col gap-4 px-3 pb-4 lg:flex-row">
         {/* Sidebar */}
-        <aside className={`hidden shrink-0 flex-col gap-1 transition-all duration-300 lg:flex ${collapsed ? "w-14" : "w-40"}`}>
+        <aside className={`dashboard-nav flex shrink-0 gap-1 transition-all duration-300 lg:flex-col ${collapsed ? "lg:w-14" : "lg:w-44"}`}>
           {nav.map(([I, label], i) => (
-            <button key={label} onClick={() => openModule(i)} title={label} className={`depth-card flex items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm transition ${i === active ? "border-l-2 border-primary bg-primary/20 font-semibold" : "hover:bg-muted"}`}>
-              <span className="grid h-8 w-8 place-items-center rounded-full border border-border bg-muted/50"><I className="h-4 w-4 text-primary glow-icon" /></span>
+            <button key={label} onClick={() => openModule(i)} title={label} className={`depth-card flex shrink-0 items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm transition ${i === active ? "border-l-2 border-primary bg-primary/20 font-semibold" : "hover:bg-muted"}`}>
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border bg-muted/50"><I className="h-4 w-4 text-primary glow-icon" /></span>
               {!collapsed && label}
             </button>
           ))}
         </aside>
 
-        <main className="grid min-w-0 flex-1 gap-3">
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-            {stats.map(([I, l, v, c]) => (
-              <div key={l} className="panel depth-card flex items-center gap-3 p-3">
-                <div className="grid h-12 w-12 place-items-center rounded-lg border border-border"><I className="h-7 w-7 text-primary glow-icon" /></div>
-                <div><div className="text-sm">{l}</div><div className="text-2xl font-bold">{v}</div><div className="text-xs text-success">↑ {c}</div></div>
-              </div>
-            ))}
-            <div className="panel flex items-center gap-3 p-3">
-              <ShieldCheck className="h-10 w-10 text-primary glow-icon" />
-              <div><div className="text-sm">System Health</div><div className="text-2xl font-bold">100%</div><div className="text-xs text-success">All Systems Online</div></div>
-            </div>
-          </div>
-
-          <div className="grid gap-3 xl:grid-cols-[1fr_400px]">
-            <div className="grid gap-3">
-              {/* Products */}
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
-                {products.map(([I, t, s]) => (
-                  <div key={t} className="panel depth-card holo-scan flex flex-col items-center p-3 text-center transition hover:-translate-y-0.5">
-                    <I className="mb-1 h-8 w-8 text-accent glow-icon" />
-                    <div className="text-sm font-semibold">{t}</div><div className="text-[11px] text-muted-foreground">{s}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid gap-3 lg:grid-cols-[230px_1fr]">
-                {/* Brands */}
-                <div className="panel p-3">
-                  <h3 className="mb-2 font-display text-sm tracking-wider">BRAND ECOSYSTEM</h3>
-                  {brands.map(([ab, n, s, bg]) => (
-                    <div key={n} className="flex items-center gap-3 border-t border-border/50 py-2">
-                      <div className={`grid h-9 w-9 place-items-center rounded-full ${bg} text-xs font-bold`}>{ab}</div>
-                      <div className="flex-1 leading-tight"><div className="text-sm font-semibold">{n}</div><div className="text-xs text-muted-foreground">{s}</div></div>
-                      <Circle className="h-2.5 w-2.5 fill-success text-success" />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Jarvis core */}
-                <div className="relative overflow-hidden rounded-lg" onMouseMove={(e) => { const b = e.currentTarget.getBoundingClientRect(); setTilt([(e.clientX - b.left) / b.width - 0.5, (e.clientY - b.top) / b.height - 0.5]); }} onMouseLeave={() => setTilt([0, 0])}>
-                  <JarvisCore state={core} tilt={tilt} override={lookOverride} theme={agentTheme ? AGENT_DRESS_CODE[agentTheme] ?? null : null} />
-                  <div className="relative text-center">
+        <main className="dashboard-main grid min-w-0 flex-1 content-start gap-4">
+          {/* Jarvis core — existing identity, avatar and input/output groups */}
+          <section className="dashboard-hero relative" onMouseMove={(e) => { const b = e.currentTarget.getBoundingClientRect(); setTilt([(e.clientX - b.left) / b.width - 0.5, (e.clientY - b.top) / b.height - 0.5]); }} onMouseLeave={() => setTilt([0, 0])}>
+                  <div className="hero-identity relative min-w-0 text-center md:text-left">
                     <div className="pt-3 font-display text-3xl font-black tracking-[0.3em] text-primary glow-text">AYRA</div>
                     <div className="font-display text-[10px] tracking-[0.3em] text-accent">AI COMMAND CENTER</div>
                     <button onClick={() => setLookbook(true)} className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 font-display text-[10px] tracking-widest text-primary transition hover:bg-primary/20">
@@ -242,25 +204,87 @@ function Dashboard() {
                       </div>
                     )}
                   </div>
-                  <div className="relative flex justify-between p-3">
+
+            <div className="hero-avatar relative min-w-0">
+              <JarvisCore state={core} tilt={tilt} override={lookOverride} theme={agentTheme ? AGENT_DRESS_CODE[agentTheme] ?? null : null} />
+            </div>
+                  <div className="hero-streams relative grid grid-cols-2 gap-3 p-3">
                     {[["DATA INPUTS", inputs], ["AI OUTPUTS", outputs]].map(([title, list], k) => (
                       <div key={title as string} className={`flex flex-col gap-2 ${k ? "items-end" : ""}`}>
                         <div className="mb-1 flex items-center gap-1 font-display text-xs text-accent"><CircleDot className="h-4 w-4" />{title as string}</div>
                         {(list as typeof inputs).map(([I, l]) => (
-                          <div key={l} className="panel flex w-32 items-center gap-2 px-2 py-1.5 text-xs"><I className="h-4 w-4 text-primary" />{l}</div>
+                          <div key={l} className="panel flex min-w-0 items-center gap-2 px-2 py-1.5 text-xs"><I className="h-4 w-4 text-primary" />{l}</div>
                         ))}
                       </div>
                     ))}
                   </div>
-                </div>
+          </section>
+          {/* Voice bar */}
+          <div className="dashboard-command panel mx-auto grid w-full max-w-4xl items-center gap-3 rounded-full px-3 py-2">
+            <button aria-label="Talk to Jarvis" onClick={() => { clear(); setCore(core === "listening" ? "idle" : "listening"); inputRef.current?.focus(); }} className={`grid h-14 w-14 place-items-center rounded-full border-2 border-primary glow-icon ${core === "listening" ? "core-pulse bg-primary/20" : ""}`}><Mic className="h-6 w-6 text-primary" /></button>
+            <input ref={inputRef} title="Focus with Ctrl+K" value={cmd} onChange={(e) => { setCmd(e.target.value); if (core === "idle" && e.target.value) setCore("listening"); if (!e.target.value && core === "listening") setCore("idle"); }} onKeyDown={(e) => e.key === "Enter" && run()} aria-label="Command Jarvis" className="min-w-0 flex-1 bg-transparent text-lg outline-none placeholder:text-muted-foreground" placeholder="Hey AYRA, how can I help you today?  (Ctrl+K)" />
+            {[[UserCog, "Agents"], [Wrench, "Tools"], [FileText, "Files"], [Globe, "Web"]].map(([I, l]) => {
+              const Icon = I as typeof Globe;
+              const i = nav.findIndex(([, n]) => n === (l === "Agents" ? "Agents" : l === "Tools" ? "Development" : l === "Files" ? "Projects" : "APIs"));
+              return <button key={l as string} onClick={() => openModule(i)} className="command-shortcut flex flex-col items-center px-2 text-xs"><Icon className="h-5 w-5 text-primary" />{l as string}</button>;
+            })}
+            <button aria-label="Send command" onClick={run} className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Send className="h-5 w-5" /></button>
+          </div>
+          {/* Stats */}
+          <div className="dashboard-stats grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-6">
+            {stats.map(([I, l, v, c]) => (
+              <div key={l} className="panel depth-card flex min-w-0 items-center gap-3 p-3">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg border border-border"><I className="h-7 w-7 text-primary glow-icon" /></div>
+                <div><div className="text-sm">{l}</div><div className="text-2xl font-bold">{v}</div><div className="text-xs text-success">↑ {c}</div></div>
+              </div>
+            ))}
+            <div className="panel flex items-center gap-3 p-3">
+              <ShieldCheck className="h-10 w-10 text-primary glow-icon" />
+              <div><div className="text-sm">System Health</div><div className="text-2xl font-bold">100%</div><div className="text-xs text-success">All Systems Online</div></div>
+            </div>
+          </div>
+
+              {/* Products */}
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
+                {products.map(([I, t, s]) => (
+                  <div key={t} className="panel depth-card holo-scan flex flex-col items-center p-3 text-center transition hover:-translate-y-0.5">
+                    <I className="mb-1 h-8 w-8 text-accent glow-icon" />
+                    <div className="text-sm font-semibold">{t}</div><div className="text-[11px] text-muted-foreground">{s}</div>
+                  </div>
+                ))}
               </div>
 
-              {/* Bottom row */}
-              <div className="grid gap-3 lg:grid-cols-3">
+
+          <div className="dashboard-overview grid min-w-0 gap-4 lg:grid-cols-2">
+                <div className="panel p-3">
+                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">RECENT ACTIONS</h3><span className="rounded border border-border px-2 py-0.5 text-xs">View All</span></div>
+                  {actions.map(([t, w]) => (<div key={t} className="flex items-center gap-2 py-1 text-xs"><Activity className="h-3.5 w-3.5 text-primary" /><span className="flex-1">{t}</span><span className="text-muted-foreground">{w}</span></div>))}
+                </div>
+              <div className="status-layout grid min-w-0 grid-cols-[minmax(0,1fr)_100px] items-center gap-3">
+                <div className="panel p-3">
+                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">AYRA SYSTEM STATUS</h3><Live /></div>
+                  {status.map(([I, l, s]) => (<div key={l} className="flex items-center gap-2 py-1 text-sm"><I className="h-4 w-4 text-primary" /><span className="flex-1">{l}</span><span className="text-success">{s}</span></div>))}
+                  <div className="flex items-center gap-2 py-1 text-sm"><Activity className="h-4 w-4 text-primary" /><span className="flex-1">System Load</span><div className="h-2 w-16 rounded bg-muted"><div className="h-2 w-1/4 rounded bg-primary" /></div>24%</div>
+                </div>
+                <img src={globe} alt="Globe" loading="lazy" width={816} height={816} className="w-full self-start rounded-full object-cover [mask-image:radial-gradient(circle,black_55%,transparent_72%)]" />
+              </div>
+          </div>
+          <div className="dashboard-secondary grid min-w-0 items-start gap-4 md:grid-cols-2 xl:grid-cols-[minmax(190px,0.8fr)_minmax(0,1.2fr)_minmax(0,1.2fr)]">
+                {/* Brands */}
+                <div className="panel p-3">
+                  <h3 className="mb-2 font-display text-sm tracking-wider">BRAND ECOSYSTEM</h3>
+                  {brands.map(([ab, n, s, bg]) => (
+                    <div key={n} className="flex items-center gap-3 border-t border-border/50 py-2">
+                      <div className={`grid h-9 w-9 place-items-center rounded-full ${bg} text-xs font-bold`}>{ab}</div>
+                      <div className="min-w-0 flex-1 leading-tight"><div className="text-sm font-semibold">{n}</div><div className="text-xs text-muted-foreground">{s}</div></div>
+                      <Circle className="h-2.5 w-2.5 fill-success text-success" />
+                    </div>
+                  ))}
+                </div>            <div className="grid min-w-0 gap-4">
                 <div className="panel p-3">
                   <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">GLOBAL ANALYTICS</h3><span className="rounded border border-border px-2 py-0.5 text-xs">Last 30 Days</span></div>
-                  <div className="flex gap-3">
-                    <img src={worldmap} alt="World map" loading="lazy" width={1088} height={608} className="w-3/5 rounded object-cover" />
+                  <div className="analytics-layout grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(100px,1fr)] gap-3">
+                    <img src={worldmap} alt="World map" loading="lazy" width={1088} height={608} className="h-full min-h-40 w-full rounded object-cover" />
                     <div className="flex-1 space-y-2 text-xs">
                       {[["Global Users", "125,486", "18%"], ["Total Sales", "$48,750", "22%"], ["Orders", "3,486", "16%"], ["Countries", "128", "8%"]].map(([l, v, c]) => (
                         <div key={l}><div className="text-muted-foreground">{l}</div><div className="flex justify-between text-lg font-bold">{v}<span className="text-xs text-success">↑ +{c}</span></div></div>
@@ -272,23 +296,7 @@ function Dashboard() {
                   <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">AI INSIGHTS</h3><Live /></div>
                   {insights.map(([t, c]) => (<div key={t} className="flex items-center gap-2 py-1 text-xs">{c === "text-danger" ? <AlertTriangle className={`h-3.5 w-3.5 ${c}`} /> : <CheckCircle2 className={`h-3.5 w-3.5 ${c}`} />}{t}</div>))}
                 </div>
-                <div className="panel p-3">
-                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">RECENT ACTIONS</h3><span className="rounded border border-border px-2 py-0.5 text-xs">View All</span></div>
-                  {actions.map(([t, w]) => (<div key={t} className="flex items-center gap-2 py-1 text-xs"><Activity className="h-3.5 w-3.5 text-primary" /><span className="flex-1">{t}</span><span className="text-muted-foreground">{w}</span></div>))}
-                </div>
-              </div>
             </div>
-
-            {/* Right column */}
-            <div className="grid content-start gap-3">
-              <div className="grid grid-cols-[1fr_130px] gap-3">
-                <div className="panel p-3">
-                  <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">AYRA SYSTEM STATUS</h3><Live /></div>
-                  {status.map(([I, l, s]) => (<div key={l} className="flex items-center gap-2 py-1 text-sm"><I className="h-4 w-4 text-primary" /><span className="flex-1">{l}</span><span className="text-success">{s}</span></div>))}
-                  <div className="flex items-center gap-2 py-1 text-sm"><Activity className="h-4 w-4 text-primary" /><span className="flex-1">System Load</span><div className="h-2 w-16 rounded bg-muted"><div className="h-2 w-1/4 rounded bg-primary" /></div>24%</div>
-                </div>
-                <img src={globe} alt="Globe" loading="lazy" width={816} height={816} className="w-full self-start rounded-full object-cover [mask-image:radial-gradient(circle,black_55%,transparent_72%)]" />
-              </div>
               <div className="panel p-3">
                 <div className="mb-2 flex items-center justify-between"><h3 className="font-display text-sm">LIVE AGENT ACTIVITY</h3>
                   {agentTheme ? <button onClick={() => setAgentTheme(null)} className="rounded border border-border px-2 py-0.5 text-xs hover:bg-primary/15">Reset to AYRA</button> : <span className="text-xs text-muted-foreground">Tap an agent</span>}
@@ -301,29 +309,15 @@ function Dashboard() {
                     className={`depth-card flex w-full items-center gap-3 rounded-md px-1 py-2 text-left ${sel ? "agent-selected" : ""}`}
                     style={{ ["--agent" as string]: d ? dressColor(d) : "var(--primary)" }}>
                     <div className="agent-orb grid h-9 w-9 place-items-center rounded-full"><Bot className="h-4 w-4" style={{ color: "var(--agent)" }} /></div>
-                    <div className="flex-1 leading-tight"><div className="text-sm font-semibold">{n}</div><div className="text-xs text-muted-foreground">{d ? `${d.role} · ${d.dress}` : t}</div></div>
-                    <div className="h-1.5 w-20 rounded bg-muted"><div className="agent-bar h-1.5 rounded" style={{ width: `${p}%` }} /></div>
+                    <div className="min-w-0 flex-1 leading-tight"><div className="text-sm font-semibold">{n}</div><div className="text-xs text-muted-foreground">{d ? `${d.role} · ${d.dress}` : t}</div></div>
+                    <div className="agent-progress h-1.5 w-20 shrink-0 rounded bg-muted"><div className="agent-bar h-1.5 rounded" style={{ width: `${p}%` }} /></div>
                     <span className="w-8 text-right text-xs">{p}%</span>
                   </button>);
                 })}
-              </div>
-            </div>
-          </div>
-
-          {/* Voice bar */}
-          <div className="panel mx-auto flex w-full max-w-4xl items-center gap-4 rounded-full px-3 py-2">
-            <button aria-label="Talk to Jarvis" onClick={() => { clear(); setCore(core === "listening" ? "idle" : "listening"); inputRef.current?.focus(); }} className={`grid h-14 w-14 place-items-center rounded-full border-2 border-primary glow-icon ${core === "listening" ? "core-pulse bg-primary/20" : ""}`}><Mic className="h-6 w-6 text-primary" /></button>
-            <input ref={inputRef} title="Focus with Ctrl+K" value={cmd} onChange={(e) => { setCmd(e.target.value); if (core === "idle" && e.target.value) setCore("listening"); if (!e.target.value && core === "listening") setCore("idle"); }} onKeyDown={(e) => e.key === "Enter" && run()} aria-label="Command Jarvis" className="min-w-0 flex-1 bg-transparent text-lg outline-none placeholder:text-muted-foreground" placeholder="Hey AYRA, how can I help you today?  (Ctrl+K)" />
-            {[[UserCog, "Agents"], [Wrench, "Tools"], [FileText, "Files"], [Globe, "Web"]].map(([I, l]) => {
-              const Icon = I as typeof Globe;
-              const i = nav.findIndex(([, n]) => n === (l === "Agents" ? "Agents" : l === "Tools" ? "Development" : l === "Files" ? "Projects" : "APIs"));
-              return <button key={l as string} onClick={() => openModule(i)} className="hidden flex-col items-center px-2 text-xs sm:flex"><Icon className="h-5 w-5 text-primary" />{l as string}</button>;
-            })}
-            <button aria-label="Send command" onClick={run} className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground"><Send className="h-5 w-5" /></button>
-          </div>
+              </div>          </div>
         </main>
       </div>
-      {open !== null && nav[open] && <ModulePanel index={open} title={nav[open]![1]} Icon={nav[open]![0]} onClose={() => setOpen(null)} />}
+      {open !== null && nav[open] && <ModulePanel index={open} title={nav[open][1]} Icon={nav[open][0]} onClose={() => setOpen(null)} />}
       {lookbook && <LookbookPanel current={lookOverride} onSelect={(l) => { setLookOverride(l); setLookbook(false); }} onClose={() => setLookbook(false)} />}
     </div>
   );
