@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { applyTheme, type DressCode } from "@/lib/agent-dress-code";
 import ayraDefault from "@/assets/ayra-cyan.jpg";
 import ayraCyanSide from "@/assets/ayra-cyan-side.jpg";
