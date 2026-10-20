@@ -412,7 +412,7 @@ function Dashboard() {
             onMouseLeave={() => setTilt([0, 0])}
           >
             <Suspense fallback={null}><CommandCenterScene tilt={tilt} running={isWorkspaceRunning(workspaceTask)} /></Suspense>
-            <div hidden className="preserved-action-workspace">
+            <div hidden={!isWorkspaceRunning(workspaceTask)} className="preserved-action-workspace">
               <ActionWorkspace task={workspaceTask} onTask={setWorkspaceTask} />
             </div>
             <div className="hero-identity relative min-w-0 text-center md:text-left">
@@ -448,6 +448,7 @@ function Dashboard() {
                 tilt={tilt}
                 override={lookOverride}
                 theme={agentTheme ? (AGENT_DRESS_CODE[agentTheme] ?? null) : null}
+                commandKey={workspaceTask?.id ?? null}
               />
             </div>
             <div className="hero-streams relative grid grid-cols-2 gap-3 p-3">
