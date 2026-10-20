@@ -473,3 +473,7 @@ html { transition: color .7s; }
  .immersive-dashboard .dashboard-main > .dashboard-command { width: calc(100% - 24px); }
  .workspace-request-path { gap: 6px; flex-wrap: wrap; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ayra-banner-video { display: none; }
+}

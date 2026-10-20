@@ -15,6 +15,7 @@ import ayraCrystal from "@/assets/ayra-crystal.jpg";
 import ayraVeil from "@/assets/ayra-veil.jpg";
 import ayraCinematic from "@/assets/ayra-cinematic.jpg";
 import ayraCommandCutout from "@/assets/ayra-command-cutout.png";
+import ayraWalk from "@/assets/videos/ayra-walk.mp4.asset.json";
 
 export type CoreState =
   | "idle"
@@ -215,7 +216,18 @@ export function JarvisCore({
                 style={{ opacity: k === look ? 1 : 0 }}
               />
             ))}
-            {/* holographic sheen matched to dashboard palette */}
+            {state === "idle" && !override && (
+              <video
+                src={ayraWalk.url}
+                poster={ayraCyanJacket}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+                className="ayra-banner-video absolute inset-0 h-full w-full object-cover object-top"
+              />
+            )}
           </div>
         </div>
       </div>
