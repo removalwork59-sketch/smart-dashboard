@@ -63,10 +63,8 @@ function Architecture({ tilt, running }: { tilt: [number, number]; running: bool
         <planeGeometry args={[60, 36, 1, 1]} />
         <meshStandardMaterial color={base} map={texture} metalness={0.7} roughness={0.42} />
       </mesh>
-      {arcs.map((curve, i) => <group key={i}>
-        <mesh><tubeGeometry args={[curve, 64, 0.1, 8, false]} /><meshStandardMaterial color={surface} metalness={0.85} roughness={0.3} /></mesh>
-        <mesh position-y={i === 0 ? 0.14 : -0.14}><tubeGeometry args={[curve, 64, 0.015, 5, false]} /><meshStandardMaterial color={primary} emissive={primary} emissiveIntensity={2} /></mesh>
-      </group>)}
+      {/* Horizontal glowing arcs removed at the user's request */}
+      {void arcs}
       {[-12, -10, 10, 12].map(x => <mesh key={x} position={[x, 0, -5]} rotation-y={-x * 0.03}>
         <boxGeometry args={[0.12, 6.8, 0.4]} /><meshStandardMaterial color={surface} metalness={0.75} roughness={0.3} />
       </mesh>)}
