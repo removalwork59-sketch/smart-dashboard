@@ -549,3 +549,7 @@ html, body { overflow-x: hidden; }
 .immersive-dashboard .ayra-office-wall { z-index: 0; }
 .immersive-dashboard .ayra-banner-shade, .immersive-dashboard .command-center-scene { display: none; }
 .immersive-dashboard .ayra-banner-portrait { z-index: 1; }
+/* Plain white office across the whole banner; logo centred in the open left half, slightly raised */
+.ayra-office-wall { background: #fff; }
+.ayra-office-logo { position: absolute; left: 25%; top: 34%; width: min(40%, 560px); height: auto; transform: translate(-50%, -50%); }
+@media (max-width: 767px) { .ayra-office-logo { left: 50%; top: 12%; width: 80%; } }
