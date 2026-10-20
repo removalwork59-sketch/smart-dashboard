@@ -451,32 +451,32 @@ function Dashboard() {
                 commandKey={workspaceTask?.id ?? null}
               />
             </div>
-            <div className="hero-streams relative grid grid-cols-2 gap-3 p-3">
-              {[
-                ["DATA INPUTS", inputs],
-                ["AI OUTPUTS", outputs],
-              ].map(([title, list], k) => (
-                <div
-                  key={title as string}
-                  className={`flex flex-col gap-2 ${k ? "items-end" : ""}`}
-                >
-                  <div className="mb-1 flex items-center gap-1 font-display text-xs text-accent">
-                    <CircleDot className="h-4 w-4" />
-                    {title as string}
-                  </div>
-                  {(list as typeof inputs).map(([I, l]) => (
-                    <div
-                      key={l}
-                      className="panel flex min-w-0 items-center gap-2 px-2 py-1.5 text-xs"
-                    >
-                      <I className="h-4 w-4 text-primary" />
-                      {l}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
           </section>
+          <div className="hero-streams office-streams relative grid grid-cols-2 gap-3 p-3">
+            {[
+              ["DATA INPUTS", inputs],
+              ["AI OUTPUTS", outputs],
+            ].map(([title, list], k) => (
+              <div
+                key={title as string}
+                className={`flex flex-col gap-2 ${k ? "items-end" : ""}`}
+              >
+                <div className="mb-1 flex items-center gap-1 font-display text-xs text-accent">
+                  <CircleDot className="h-4 w-4" />
+                  {title as string}
+                </div>
+                {(list as typeof inputs).map(([I, l]) => (
+                  <div
+                    key={l}
+                    className="panel flex min-w-0 items-center gap-2 px-2 py-1.5 text-xs"
+                  >
+                    <I className="h-4 w-4 text-primary" />
+                    {l}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
           {/* Voice bar */}
           <div className="dashboard-command panel mx-auto grid w-full max-w-4xl items-center gap-3 rounded-full px-3 py-2">
             <button
